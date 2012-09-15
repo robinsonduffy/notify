@@ -1,0 +1,16 @@
+= form_for(@user) do |f|
+  = render 'shared/error_messages', :object => f.object
+  %div.form-field
+    = f.label :username
+    = f.text_field :username
+  %div.form-field
+    = f.label :password
+    = f.password_field :password
+    %p#ldap-check-box
+      = check_box_tag("ldap", "true", false, {:id => 'ldap-user'})
+      = label_tag("ldap-user", "LDAP User (do not enter a password)")
+  %div.form-field
+    = f.label :name
+    = f.text_field :name
+  %div.form-submit
+    = f.submit "Create User"

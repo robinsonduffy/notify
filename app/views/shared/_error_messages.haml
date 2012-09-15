@@ -1,0 +1,6 @@
+- if object.errors.any?
+  %div#error-explanation
+    %h3 There were errors:
+    %ul
+      - object.errors.full_messages.each do |error_message|
+        %li= error_message

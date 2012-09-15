@@ -1,0 +1,19 @@
+%div#user-actions.round
+  %p= link_to("Create New User", new_user_path)
+%table
+  %thead
+    %tr
+      %th
+      %th Name
+      %th Roles
+      %th LDAP
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td= link_to user.username, user_path(user)
+        %td= user.name
+        %td
+          %ul
+            - user.roles.each do |role|
+              %li= role.humanize
+        %td= (user.password == 'ldap') ? '&#x2713;'.html_safe : '&nbsp;'.html_safe

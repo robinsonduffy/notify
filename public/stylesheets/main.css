@@ -1,0 +1,49 @@
+
+body {background-color:#F3F3F3;}
+body a {text-decoration:none;}
+body a:visited {color:#06c;}
+#outer-wrapper  {margin-left:40px; margin-top:20px; background-color:white; margin-right:40px; padding:0 20px 20px 20px; border:1px solid #ccc;}
+#home-button {border:1px solid #ccc; border-top:0; background-color:#F3F3F3; float:left; padding:5px; -moz-border-radius-bottomleft: 10px; -moz-border-radius-bottomright: 10px; -webkit-border-bottom-left-radius: 10px; -webkit-border-bottom-right-radius: 10px; border-bottom-left-radius:10px; border-bottom-right-radius: 10px;}
+#home-button li {list-style:none; font-weight:bold; padding:5px;; margin:0;}
+#user-tools {border:1px solid #ccc; border-top: 1px solid #F3F3F3; text-align:right; background-color:#F3F3F3; float:right; padding:5px; -moz-border-radius-bottomleft: 10px; -moz-border-radius-bottomright: 10px; -webkit-border-bottom-left-radius: 10px; -webkit-border-bottom-right-radius: 10px; border-bottom-left-radius:10px; border-bottom-right-radius: 10px;}
+#user-tools li {list-style:none; font-weight:bold; float:right; padding:5px; margin:0 5px;}
+#user-tools a {text-decoration:none;}
+
+#page-content-wrapper {clear:both; padding-top:10px}
+#footer {clear:both; padding-bottom: 20px; padding-top:10px;}
+
+/*Home Page*/
+
+
+/*Forms*/
+.form-field {float:left; clear:left;}
+.form-field label {width:100px; float:left; text-align:right; padding-right:10px; line-height:2em;}
+.form-field input {float:left;}
+.form-submit {float:left; clear:left; margin-left:110px; margin-top:10px;}
+.form-delete-link {clear:both; margin-left:110px;}
+.form-field p.note {margin-left:110px; color:#999; font-style:italic;}
+.field_with_errors {float:left;}
+.field_with_errors input {border:1px solid red;}
+.field_with_errors select {border:1px solid red;}
+
+/*Special Forms*/
+#new_user #ldap-check-box {margin-left:105px; clear:left;}
+#new_user #ldap-check-box label {width:auto; float:none;}
+#new_user #ldap-check-box input {float:none;}
+
+/*Errors*/
+#error-explanation {border:1px solid #FF5E86; background-color:#FFE3EA; padding:5px; margin-bottom:20px;}
+#error-explanation h3 {margin:0;}
+#error-explanation ul {margin-top:10px; margin-bottom:0;}
+
+/*Debug*/
+.debug_dump {clear:both; display:none;}
+
+
+/* ROUND CORNERS */
+.round {
+  -moz-border-radius:    10px;
+  -webkit-border-radius: 10px;
+  border-radius:         10px;
+}
+
