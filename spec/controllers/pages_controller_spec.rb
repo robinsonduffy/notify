@@ -23,7 +23,7 @@ describe PagesController do
 
       it "should have the right title" do
         get :home
-        response.should have_selector("title", :content => "FNSBSD LDAP Auth")
+        response.should have_selector("title", :content => "Notification App")
       end
 
       it "should have a home link" do

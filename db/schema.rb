@@ -11,7 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111118172023) do
+ActiveRecord::Schema.define(:version => 20120916154649) do
+
+  create_table "recipients", :force => true do |t|
+    t.string   "external_id"
+    t.string   "recipient_type"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "recipients", ["external_id", "recipient_type"], :name => "index_recipients_on_external_id_and_recipient_type", :unique => true
+  add_index "recipients", ["recipient_type"], :name => "index_recipients_on_recipient_type"
 
   create_table "users", :force => true do |t|
     t.string   "username"
