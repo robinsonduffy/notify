@@ -10,3 +10,9 @@ Factory.define :recipient do |recipient|
   recipient.first_name "Test"
   recipient.last_name "Student"
 end
+
+Factory.define :contact_method do |contact_method|
+  contact_method.contact_method_type "phone"
+  contact_method.delivery_route "19074554225"
+  contact_method.association :recipient
+end
