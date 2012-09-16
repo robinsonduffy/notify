@@ -12,6 +12,8 @@
 #
 
 class User < ActiveRecord::Base
+  has_many :groups
+
   attr_accessible :username, :password, :name, :admin
   validates :username, :presence => true, :uniqueness => {:case_sensitive => false}
   validates :password, :presence => true
