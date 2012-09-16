@@ -1,5 +1,6 @@
 class Recipient < ActiveRecord::Base
   has_and_belongs_to_many :groups
+  has_many :contact_methods
 
   validates :external_id, :presence => true,
                           :uniqueness => {:scope => :recipient_type, :case_sensitive => false}

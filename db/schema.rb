@@ -11,7 +11,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120916162252) do
+ActiveRecord::Schema.define(:version => 20120916164738) do
+
+  create_table "contact_methods", :force => true do |t|
+    t.string   "contact_method_type"
+    t.string   "delivery_route"
+    t.integer  "recipient_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "contact_methods", ["recipient_id"], :name => "index_contact_methods_on_recipient_id"
 
   create_table "groups", :force => true do |t|
     t.string   "name"
