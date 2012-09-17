@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120916170045) do
+ActiveRecord::Schema.define(:version => 20120916224157) do
 
   create_table "contact_methods", :force => true do |t|
     t.string   "contact_method_type"
@@ -51,6 +51,17 @@ ActiveRecord::Schema.define(:version => 20120916170045) do
 
   add_index "groups_recipients", ["group_id", "recipient_id"], :name => "index_groups_recipients_on_group_id_and_recipient_id"
   add_index "groups_recipients", ["recipient_id", "group_id"], :name => "index_groups_recipients_on_recipient_id_and_group_id"
+
+  create_table "linked_recipients", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "parent_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "linked_recipients", ["parent_id", "student_id"], :name => "index_linked_recipients_on_parent_id_and_student_id", :unique => true
+  add_index "linked_recipients", ["parent_id"], :name => "index_linked_recipients_on_parent_id"
+  add_index "linked_recipients", ["student_id"], :name => "index_linked_recipients_on_student_id"
 
   create_table "recipients", :force => true do |t|
     t.string   "external_id"
