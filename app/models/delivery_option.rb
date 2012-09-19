@@ -5,7 +5,7 @@ class DeliveryOption < ActiveRecord::Base
   validates :scope_id, :presence => true
 
   ##OPTIONS##
-  OPTIONS = ['emergency_only','attendance','outreach'] #ALWAYS ADD NEW OPTIONS ON THE END!
+  OPTIONS = ['emergency','attendance','outreach'] #ALWAYS ADD NEW OPTIONS ON THE END!
 
   scope :with_option, lambda { |option| {:conditions => "options_mask & #{2**OPTIONS.index(option.to_s)} > 0 "} }
 

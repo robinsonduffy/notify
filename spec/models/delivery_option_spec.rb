@@ -4,7 +4,7 @@ describe DeliveryOption do
   before(:each) do
     recipient = Factory(:recipient)
     @contact_method = Factory(:contact_method, {:recipient => recipient})
-    @attrs = {:option_scope => 'self', :scope_id => recipient.id, :options => ['emergency_only']}
+    @attrs = {:option_scope => 'self', :scope_id => recipient.id, :options => ['emergency']}
   end
 
   it "should create a delivery_option given correct attributes" do
