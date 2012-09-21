@@ -4,6 +4,9 @@ class DeliveryOption < ActiveRecord::Base
   validates :option_scope, :presence => true
   validates :scope_id, :presence => true
 
+  scope :own, :conditions => "option_scope = 'self'"
+  scope :linked, lambda {|linked_id| {:conditions => "option_scope = 'link' AND scope_id = '#{linked_id}'"}}
+
   ##OPTIONS##
   OPTIONS = ['emergency','attendance','outreach'] #ALWAYS ADD NEW OPTIONS ON THE END!
 

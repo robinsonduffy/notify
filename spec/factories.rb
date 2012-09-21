@@ -16,3 +16,10 @@ Factory.define :contact_method do |contact_method|
   contact_method.delivery_route "19074554225"
   contact_method.association :recipient
 end
+
+Factory.define :delivery_option do |delivery_option|
+  delivery_option.option_scope 'self'
+  delivery_option.options ['emergency']
+  delivery_option.scope_id 1
+  delivery_option.association :contact_method
+end

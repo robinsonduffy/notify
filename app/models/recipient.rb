@@ -34,4 +34,21 @@ class Recipient < ActiveRecord::Base
   def is_staff?
     self.recipient_type == 'staff'
   end
+
+  def contacts(message_type)
+    contacts = Array.new
+    # Get our own contact methods
+    self.contact_methods.each do |contact_method|
+      delivery_option = contact_method.delivery_options.own.with_option(message_type)
+      contacts.push contact_method.delivery_route if !delivery_option.empty? || message_type == 'emergency'
+    end
+    # Get the parents contact methods
+    self.parents.each do |parent|
+      parent.contact_methods.each do |contact_method|
+        delivery_option = contact_method.delivery_options.linked(self.id).with_option(message_type)
+        contacts.push contact_method.delivery_route if !delivery_option.empty? || message_type == 'emergency'
+      end
+    end
+    return contacts
+  end
 end
