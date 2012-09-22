@@ -33,16 +33,36 @@ describe Group do
       @group = Group.create!(@attrs)
     end
 
-    it "should have a user" do
-      @group.should respond_to(:user)
+    describe "user" do
+      it "should have a user" do
+        @group.should respond_to(:user)
+      end
+
+      it "should return the correct user" do
+        (@group.user == @user).should be_true
+      end
     end
 
-    it "should return the correct user" do
-      (@group.user == @user).should be_true
-    end
+    describe "recipients" do
 
-    it "should have many recipients" do
-      @group.should respond_to(:recipients)
+      it "should have many recipients" do
+        @group.should respond_to(:recipients)
+      end
+
+      it "should return the correct recipients" do
+        recipient1 = Factory(:recipient)
+        recipient2 = Factory(:recipient, :external_id => '987654')
+        recipient3 = Factory(:recipient, :external_id => '765432')
+        @group.recipients<<(recipient1)
+        @group.recipients<<(recipient3)
+        [recipient1, recipient3].each do |recipient|
+          @group.recipients.include?(recipient).should be_true
+        end
+        [recipient2].each do |recipient|
+          @group.recipients.include?(recipient).should_not be_true
+        end
+      end
+
     end
 
   end

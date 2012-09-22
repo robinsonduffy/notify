@@ -23,3 +23,12 @@ Factory.define :delivery_option do |delivery_option|
   delivery_option.scope_id 1
   delivery_option.association :contact_method
 end
+
+Factory.define :school do |school|
+  school.name "Test School"
+end
+
+Factory.define :group do |group|
+  group.name "Test Group"
+  group.association :user
+end

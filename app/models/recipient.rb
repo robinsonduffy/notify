@@ -8,6 +8,7 @@ class Recipient < ActiveRecord::Base
                                        :dependent => :destroy
   has_many :parents, :through => :reverse_linked_recipients
   has_many :students, :through => :linked_recipients
+  has_and_belongs_to_many :schools
 
   validates :external_id, :presence => true,
                           :uniqueness => {:scope => :recipient_type, :case_sensitive => false}

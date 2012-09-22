@@ -143,4 +143,54 @@ describe Recipient do
     end
   end
 
+  describe "relationships" do
+    before(:each) do
+      @recipient = Recipient.create!(@attrs)
+    end
+
+    describe "schools" do
+
+      it "should have a schools method" do
+        @recipient.should respond_to(:schools)
+      end
+
+      it "should return the correct schools" do
+        school1 = Factory(:school)
+        school2 = Factory(:school, :name => "Test School 2")
+        school3 = Factory(:school, :name => "Test School 3")
+        @recipient.schools<<(school1)
+        @recipient.schools<<(school3)
+        [school1, school3].each do |school|
+          @recipient.schools.include?(school).should be_true
+        end
+        [school2].each do |school|
+          @recipient.schools.include?(school).should_not be_true
+        end
+      end
+    end
+
+    describe "groups" do
+      before(:each) do
+        @user = Factory(:user)
+      end
+      it "should have a groups method" do
+        @recipient.should respond_to(:groups)
+      end
+
+      it "should return the correct groups" do
+        group1 = Factory(:group, :user_id => @user.id)
+        group2 = Factory(:group, :user_id => @user.id, :name => "Test Group 2")
+        group3 = Factory(:group, :user_id => @user.id, :name => "Test Group 3")
+        @recipient.groups<<(group1)
+        @recipient.groups<<(group3)
+        [group1, group3].each do |group|
+          @recipient.groups.include?(group).should be_true
+        end
+        [group2].each do |group|
+          @recipient.groups.include?(group).should_not be_true
+        end
+      end
+    end
+  end
+
 end

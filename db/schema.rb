@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120916224157) do
+ActiveRecord::Schema.define(:version => 20120922184942) do
 
   create_table "contact_methods", :force => true do |t|
     t.string   "contact_method_type"
@@ -74,6 +74,20 @@ ActiveRecord::Schema.define(:version => 20120916224157) do
 
   add_index "recipients", ["external_id", "recipient_type"], :name => "index_recipients_on_external_id_and_recipient_type", :unique => true
   add_index "recipients", ["recipient_type"], :name => "index_recipients_on_recipient_type"
+
+  create_table "recipients_schools", :id => false, :force => true do |t|
+    t.integer "recipient_id"
+    t.integer "school_id"
+  end
+
+  add_index "recipients_schools", ["recipient_id", "school_id"], :name => "index_recipients_schools_on_recipient_id_and_school_id"
+  add_index "recipients_schools", ["school_id", "recipient_id"], :name => "index_recipients_schools_on_school_id_and_recipient_id"
+
+  create_table "schools", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "username"
