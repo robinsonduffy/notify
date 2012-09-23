@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120922184942) do
+ActiveRecord::Schema.define(:version => 20120923203351) do
 
   create_table "contact_methods", :force => true do |t|
     t.string   "contact_method_type"
@@ -22,6 +22,14 @@ ActiveRecord::Schema.define(:version => 20120922184942) do
   end
 
   add_index "contact_methods", ["recipient_id"], :name => "index_contact_methods_on_recipient_id"
+
+  create_table "contact_methods_lists", :id => false, :force => true do |t|
+    t.integer "contact_method_id"
+    t.integer "list_id"
+  end
+
+  add_index "contact_methods_lists", ["contact_method_id", "list_id"], :name => "index_contact_methods_lists_on_contact_method_id_and_list_id"
+  add_index "contact_methods_lists", ["list_id", "contact_method_id"], :name => "index_contact_methods_lists_on_list_id_and_contact_method_id"
 
   create_table "delivery_options", :force => true do |t|
     t.string   "option_scope"
@@ -62,6 +70,16 @@ ActiveRecord::Schema.define(:version => 20120922184942) do
   add_index "linked_recipients", ["parent_id", "student_id"], :name => "index_linked_recipients_on_parent_id_and_student_id", :unique => true
   add_index "linked_recipients", ["parent_id"], :name => "index_linked_recipients_on_parent_id"
   add_index "linked_recipients", ["student_id"], :name => "index_linked_recipients_on_student_id"
+
+  create_table "lists", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "lists", ["user_id"], :name => "index_lists_on_user_id"
 
   create_table "recipients", :force => true do |t|
     t.string   "external_id"
