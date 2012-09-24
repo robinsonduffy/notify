@@ -14,6 +14,7 @@
 class User < ActiveRecord::Base
   has_many :groups
   has_many :lists
+  has_many :message_permissions, :dependent => :destroy
 
   attr_accessible :username, :password, :name, :admin
   validates :username, :presence => true, :uniqueness => {:case_sensitive => false}

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120923203351) do
+ActiveRecord::Schema.define(:version => 20120924054204) do
 
   create_table "contact_methods", :force => true do |t|
     t.string   "contact_method_type"
@@ -80,6 +80,16 @@ ActiveRecord::Schema.define(:version => 20120923203351) do
   end
 
   add_index "lists", ["user_id"], :name => "index_lists_on_user_id"
+
+  create_table "message_permissions", :force => true do |t|
+    t.integer  "object_id"
+    t.string   "object_type"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "message_permissions", ["user_id", "object_id", "object_type"], :name => "index_message_permissions_on_object_combo", :unique => true
 
   create_table "recipients", :force => true do |t|
     t.string   "external_id"
