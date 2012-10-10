@@ -10,6 +10,7 @@ class Recipient < ActiveRecord::Base
   has_many :students, :through => :linked_recipients
   has_and_belongs_to_many :schools
   belongs_to :recipient_type
+  has_many :message_recipients, :as => :object, :dependent => :destroy
 
   validates :external_id, :presence => true,
                           :uniqueness => {:scope => :recipient_type_id, :case_sensitive => false}
