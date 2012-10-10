@@ -6,9 +6,9 @@ end
 
 Factory.define :recipient do |recipient|
   recipient.external_id "12345"
-  recipient.recipient_type "student"
   recipient.first_name "Test"
   recipient.last_name "Student"
+  recipient.association :recipient_type
 end
 
 Factory.define :contact_method do |contact_method|
@@ -31,4 +31,8 @@ end
 Factory.define :group do |group|
   group.name "Test Group"
   group.association :user
+end
+
+Factory.define :recipient_type do |recipient_type|
+  recipient_type.name "Student"
 end

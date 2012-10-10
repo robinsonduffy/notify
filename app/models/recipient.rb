@@ -9,10 +9,11 @@ class Recipient < ActiveRecord::Base
   has_many :parents, :through => :reverse_linked_recipients
   has_many :students, :through => :linked_recipients
   has_and_belongs_to_many :schools
+  belongs_to :recipient_type
 
   validates :external_id, :presence => true,
-                          :uniqueness => {:scope => :recipient_type, :case_sensitive => false}
-  validates :recipient_type, :presence => true
+                          :uniqueness => {:scope => :recipient_type_id, :case_sensitive => false}
+  validates :recipient_type_id, :presence => true
   validates :first_name, :presence => true
   validates :last_name, :presence => true
 
@@ -25,15 +26,15 @@ class Recipient < ActiveRecord::Base
   end
 
   def is_student?
-    self.recipient_type == 'student'
+    self.recipient_type.name == 'Student'
   end
 
   def is_parent?
-    self.recipient_type == 'parent'
+    self.recipient_type.name == 'Parent'
   end
 
   def is_staff?
-    self.recipient_type == 'staff'
+    self.recipient_type.name == 'Staff'
   end
 
   def contacts(message_type, contact_method_types)

@@ -50,9 +50,10 @@ describe Group do
       end
 
       it "should return the correct recipients" do
-        recipient1 = Factory(:recipient)
-        recipient2 = Factory(:recipient, :external_id => '987654')
-        recipient3 = Factory(:recipient, :external_id => '765432')
+        recipient_type = Factory(:recipient_type)
+        recipient1 = Factory(:recipient, :recipient_type_id => recipient_type.id)
+        recipient2 = Factory(:recipient, :recipient_type_id => recipient_type.id, :external_id => '987654')
+        recipient3 = Factory(:recipient, :recipient_type_id => recipient_type.id, :external_id => '765432')
         @group.recipients<<(recipient1)
         @group.recipients<<(recipient3)
         [recipient1, recipient3].each do |recipient|

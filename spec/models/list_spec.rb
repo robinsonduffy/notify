@@ -56,10 +56,11 @@ describe List do
       end
 
       it "should return the correct contact_methods" do
-        recipient1 = Factory(:recipient)
+        recipient_type = Factory(:recipient_type)
+        recipient1 = Factory(:recipient, :recipient_type_id => recipient_type.id)
         contact_method1 = Factory(:contact_method, :recipient_id => recipient1.id)
         contact_method2 = Factory(:contact_method, :delivery_route => '19071112222', :recipient_id => recipient1.id)
-        recipient2 = Factory(:recipient, :external_id => '987654')
+        recipient2 = Factory(:recipient, :recipient_type_id => recipient_type.id, :external_id => '987654')
         contact_method3 = Factory(:contact_method, :delivery_route => '19071113333', :recipient_id => recipient2.id)
         @list.contact_methods<<(contact_method1)
         @list.contact_methods<<(contact_method3)

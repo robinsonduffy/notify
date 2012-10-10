@@ -25,9 +25,10 @@ describe School do
   describe "relationships" do
     before(:each) do
       @school = School.create!(@attrs)
-      @recipient_1 = Factory(:recipient)
-      @recipient_2 = Factory(:recipient, :external_id => '987654')
-      @recipient_3 = Factory(:recipient, :external_id => '765432')
+      recipient_type = Factory(:recipient_type)
+      @recipient_1 = Factory(:recipient, :recipient_type_id => recipient_type.id)
+      @recipient_2 = Factory(:recipient, :recipient_type_id => recipient_type.id, :external_id => '987654')
+      @recipient_3 = Factory(:recipient, :recipient_type_id => recipient_type.id, :external_id => '765432')
     end
 
     it "should have a recipients method" do

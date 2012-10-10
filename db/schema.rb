@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120924054204) do
+ActiveRecord::Schema.define(:version => 20121009204607) do
 
   create_table "contact_methods", :force => true do |t|
     t.string   "contact_method_type"
@@ -91,17 +91,23 @@ ActiveRecord::Schema.define(:version => 20120924054204) do
 
   add_index "message_permissions", ["user_id", "object_id", "object_type"], :name => "index_message_permissions_on_object_combo", :unique => true
 
-  create_table "recipients", :force => true do |t|
-    t.string   "external_id"
-    t.string   "recipient_type"
-    t.string   "first_name"
-    t.string   "last_name"
+  create_table "recipient_types", :force => true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "recipients", ["external_id", "recipient_type"], :name => "index_recipients_on_external_id_and_recipient_type", :unique => true
-  add_index "recipients", ["recipient_type"], :name => "index_recipients_on_recipient_type"
+  create_table "recipients", :force => true do |t|
+    t.string   "external_id"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "recipient_type_id"
+  end
+
+  add_index "recipients", ["external_id", "recipient_type_id"], :name => "index_recipients_on_external_id_and_recipient_type_id", :unique => true
+  add_index "recipients", ["recipient_type_id"], :name => "index_recipients_on_recipient_type_id"
 
   create_table "recipients_schools", :id => false, :force => true do |t|
     t.integer "recipient_id"
