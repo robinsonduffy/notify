@@ -11,16 +11,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121011024013) do
+ActiveRecord::Schema.define(:version => 20121011044146) do
 
-  create_table "contact_methods", :force => true do |t|
-    t.string   "contact_method_type"
-    t.string   "delivery_route"
-    t.integer  "recipient_id"
+  create_table "contact_method_types", :force => true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  create_table "contact_methods", :force => true do |t|
+    t.string   "delivery_route"
+    t.integer  "recipient_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "contact_method_type_id"
+  end
+
+  add_index "contact_methods", ["contact_method_type_id"], :name => "index_contact_methods_on_contact_method_type_id"
   add_index "contact_methods", ["recipient_id"], :name => "index_contact_methods_on_recipient_id"
 
   create_table "contact_methods_lists", :id => false, :force => true do |t|

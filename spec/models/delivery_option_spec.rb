@@ -3,7 +3,8 @@ require 'spec_helper'
 describe DeliveryOption do
   before(:each) do
     recipient = Factory(:recipient)
-    @contact_method = Factory(:contact_method, {:recipient => recipient})
+    @contact_method_type_phone = Factory(:contact_method_type, :name => 'phone')
+    @contact_method = Factory(:contact_method, {:recipient => recipient, :contact_method_type => @contact_method_type_phone})
     @attrs = {:option_scope => 'self', :scope_id => recipient.id, :options => ['emergency']}
   end
 

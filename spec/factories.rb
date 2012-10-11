@@ -15,6 +15,7 @@ Factory.define :contact_method do |contact_method|
   contact_method.contact_method_type "phone"
   contact_method.delivery_route "19074554225"
   contact_method.association :recipient
+  contact_method.association :contact_method_type
 end
 
 Factory.define :delivery_option do |delivery_option|
@@ -35,4 +36,8 @@ end
 
 Factory.define :recipient_type do |recipient_type|
   recipient_type.name "Student"
+end
+
+Factory.define :contact_method_type do |contact_method_type|
+  contact_method_type.name "SMS"
 end

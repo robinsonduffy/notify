@@ -5,6 +5,9 @@ describe Recipient do
     @recipient_type_student = Factory(:recipient_type, :name => 'Student')
     @recipient_type_parent = Factory(:recipient_type, :name => 'Parent')
     @recipient_type_staff = Factory(:recipient_type, :name => 'Staff')
+    @contact_method_type_phone = Factory(:contact_method_type, :name => 'phone')
+    @contact_method_type_sms = Factory(:contact_method_type, :name => 'sms')
+    @contact_method_type_email = Factory(:contact_method_type, :name => 'email')
     @recipient_type_default = Factory(:recipient_type, :name => 'Default')
     @attrs = {:external_id => "123456", :recipient_type_id => @recipient_type_student.id, :first_name => 'First', :last_name => 'Last'}
   end
@@ -51,27 +54,27 @@ describe Recipient do
   describe "get message delivery methods" do
     before(:each) do
       @student_1 = Factory(:recipient, :recipient_type_id => @recipient_type_student.id)
-      @student_1_phone = Factory(:contact_method, :delivery_route => '19071111111', :recipient => @student_1);
+      @student_1_phone = Factory(:contact_method, :delivery_route => '19071111111', :recipient => @student_1, :contact_method_type => @contact_method_type_phone);
       Factory(:delivery_option, :scope_id => @student_1.id, :contact_method => @student_1_phone, :options => ['outreach'])
       @powerschool_demographics = Factory(:recipient, :first_name => 'PowerSchool', :last_name => 'Demographics', :recipient_type_id => @recipient_type_default.id)
-      @powerschool_phone_1 = Factory(:contact_method, :delivery_route => '19072221111', :recipient => @powerschool_demographics);
+      @powerschool_phone_1 = Factory(:contact_method, :delivery_route => '19072221111', :recipient => @powerschool_demographics, :contact_method_type => @contact_method_type_phone);
       Factory(:delivery_option, :option_scope => 'link', :scope_id => @student_1.id, :contact_method => @powerschool_phone_1, :options => ['emergency'])
-      @powerschool_phone_2 = Factory(:contact_method, :delivery_route => '19072222222', :recipient => @powerschool_demographics);
+      @powerschool_phone_2 = Factory(:contact_method, :delivery_route => '19072222222', :recipient => @powerschool_demographics, :contact_method_type => @contact_method_type_phone);
       Factory(:delivery_option, :option_scope => 'link', :scope_id => @student_1.id, :contact_method => @powerschool_phone_2, :options => ['emergency'])
       @student_1.reverse_linked_recipients.create!(:parent_id => @powerschool_demographics.id)
 
       @student_2 = Factory(:recipient, :external_id => 's111222', :first_name => 'TestB', :last_name => 'Student', :recipient_type_id => @recipient_type_student.id)
       @powerschool_demographics_2 = Factory(:recipient, :external_id => 's111222', :first_name => 'PowerSchool', :last_name => 'Demographics', :recipient_type_id => @recipient_type_default.id)
-      @powerschool_phone_3 = Factory(:contact_method, :delivery_route => '19073331111', :recipient => @powerschool_demographics_2);
+      @powerschool_phone_3 = Factory(:contact_method, :delivery_route => '19073331111', :recipient => @powerschool_demographics_2, :contact_method_type => @contact_method_type_phone);
       Factory(:delivery_option, :option_scope => 'link', :scope_id => @student_2.id, :contact_method => @powerschool_phone_3, :options => ['emergency'])
       @student_2.reverse_linked_recipients.create!(:parent_id => @powerschool_demographics_2.id)
 
       @parent_1 = Factory(:recipient, :external_id => 'p1', :first_name => 'One', :last_name => 'Parent', :recipient_type_id => @recipient_type_parent.id)
       @parent_1.add_student!(@student_1)
       @parent_1.add_student!(@student_2)
-      @parent_1_phone_1 = Factory(:contact_method, :delivery_route => '19074441111', :recipient => @parent_1);
-      @parent_1_phone_2 = Factory(:contact_method, :delivery_route => '19074442222', :recipient => @parent_1);
-      @parent_1_email_1 = Factory(:contact_method, :contact_method_type => 'email', :delivery_route => 'parent1@example.com', :recipient => @parent_1)
+      @parent_1_phone_1 = Factory(:contact_method, :delivery_route => '19074441111', :recipient => @parent_1, :contact_method_type => @contact_method_type_phone);
+      @parent_1_phone_2 = Factory(:contact_method, :delivery_route => '19074442222', :recipient => @parent_1, :contact_method_type => @contact_method_type_phone);
+      @parent_1_email_1 = Factory(:contact_method, :contact_method_type => 'email', :delivery_route => 'parent1@example.com', :recipient => @parent_1, :contact_method_type => @contact_method_type_email)
       Factory(:delivery_option, :option_scope => 'link', :scope_id => @student_1.id, :contact_method => @parent_1_phone_1, :options => ['outreach','attendance'])
       Factory(:delivery_option, :option_scope => 'link', :scope_id => @student_2.id, :contact_method => @parent_1_phone_1, :options => ['outreach'])
       Factory(:delivery_option, :option_scope => 'link', :scope_id => @student_1.id, :contact_method => @parent_1_email_1, :options => ['outreach','attendance'])
@@ -79,9 +82,9 @@ describe Recipient do
 
       @parent_2 = Factory(:recipient, :external_id => 'p2', :first_name => 'Two', :last_name => 'Parent', :recipient_type_id => @recipient_type_parent.id)
       @parent_2.add_student!(@student_1)
-      @parent_2_phone_1 = Factory(:contact_method, :delivery_route => '19075551111', :recipient => @parent_2);
-      @parent_2_phone_2 = Factory(:contact_method, :delivery_route => '19075552222', :recipient => @parent_2);
-      @parent_2_email_1 = Factory(:contact_method, :contact_method_type => 'email', :delivery_route => 'parent2@example.com', :recipient => @parent_2)
+      @parent_2_phone_1 = Factory(:contact_method, :delivery_route => '19075551111', :recipient => @parent_2, :contact_method_type => @contact_method_type_phone);
+      @parent_2_phone_2 = Factory(:contact_method, :delivery_route => '19075552222', :recipient => @parent_2, :contact_method_type => @contact_method_type_phone);
+      @parent_2_email_1 = Factory(:contact_method, :contact_method_type => 'email', :delivery_route => 'parent2@example.com', :recipient => @parent_2, :contact_method_type => @contact_method_type_email)
       Factory(:delivery_option, :option_scope => 'link', :scope_id => @student_1.id, :contact_method => @parent_2_phone_1, :options => ['outreach','attendance'])
       Factory(:delivery_option, :option_scope => 'link', :scope_id => @student_1.id, :contact_method => @parent_2_phone_2, :options => ['outreach'])
       Factory(:delivery_option, :option_scope => 'link', :scope_id => @student_1.id, :contact_method => @parent_2_email_1, :options => ['outreach'])

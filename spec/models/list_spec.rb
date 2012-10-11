@@ -56,12 +56,15 @@ describe List do
       end
 
       it "should return the correct contact_methods" do
+        @contact_method_type_phone = Factory(:contact_method_type, :name => 'phone')
+        @contact_method_type_sms = Factory(:contact_method_type, :name => 'sms')
+        @contact_method_type_email = Factory(:contact_method_type, :name => 'email')
         recipient_type = Factory(:recipient_type)
         recipient1 = Factory(:recipient, :recipient_type_id => recipient_type.id)
-        contact_method1 = Factory(:contact_method, :recipient_id => recipient1.id)
-        contact_method2 = Factory(:contact_method, :delivery_route => '19071112222', :recipient_id => recipient1.id)
+        contact_method1 = Factory(:contact_method, :recipient_id => recipient1.id, :contact_method_type => @contact_method_type_phone)
+        contact_method2 = Factory(:contact_method, :delivery_route => '19071112222', :recipient_id => recipient1.id, :contact_method_type => @contact_method_type_phone)
         recipient2 = Factory(:recipient, :recipient_type_id => recipient_type.id, :external_id => '987654')
-        contact_method3 = Factory(:contact_method, :delivery_route => '19071113333', :recipient_id => recipient2.id)
+        contact_method3 = Factory(:contact_method, :delivery_route => '19071113333', :recipient_id => recipient2.id, :contact_method_type => @contact_method_type_phone)
         @list.contact_methods<<(contact_method1)
         @list.contact_methods<<(contact_method3)
         [contact_method1, contact_method3].each do |contact_method|

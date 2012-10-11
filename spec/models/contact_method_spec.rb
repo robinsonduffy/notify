@@ -3,7 +3,9 @@ require 'spec_helper'
 describe ContactMethod do
   before(:each) do
     @recipient = Factory(:recipient)
-    @attrs = {:contact_method_type => 'phone', :delivery_route => '19076990602'}
+    @contact_method_type_phone = Factory(:contact_method_type, :name => 'phone')
+    @contact_method_type_sms = Factory(:contact_method_type, :name => 'sms')
+    @attrs = {:contact_method_type_id => @contact_method_type_phone.id, :delivery_route => '19076990602'}
   end
 
   it "should create a contact_method given correct attributes" do
@@ -11,8 +13,8 @@ describe ContactMethod do
   end
 
   describe "validations" do
-    it "should require a contact_method_type" do
-      bad_contact_method = @recipient.contact_methods.build(@attrs.merge(:contact_method_type => '   '))
+    it "should require a contact_method_type_id" do
+      bad_contact_method = @recipient.contact_methods.build(@attrs.merge(:contact_method_type_id => '   '))
       bad_contact_method.should_not be_valid
     end
 
@@ -29,7 +31,7 @@ describe ContactMethod do
 
     it "should allow a delivery_route to have more than one contact_method_type" do
       @recipient.contact_methods.create!(@attrs)
-      good_contact_method = @recipient.contact_methods.build(@attrs.merge(:contact_method_type => 'sms'))
+      good_contact_method = @recipient.contact_methods.build(@attrs.merge(:contact_method_type_id => @contact_method_type_sms.id))
       good_contact_method.should be_valid
     end
   end
