@@ -1,5 +1,6 @@
 class DeliveryOption < ActiveRecord::Base
   belongs_to :contact_method
+  has_and_belongs_to_many :message_types
 
   validates :option_scope, :presence => true
   validates :scope_id, :presence => true
@@ -8,16 +9,18 @@ class DeliveryOption < ActiveRecord::Base
   scope :linked, lambda {|linked_id| {:conditions => "option_scope = 'link' AND scope_id = '#{linked_id}'"}}
 
   ##OPTIONS##
-  OPTIONS = ['emergency','attendance','outreach'] #ALWAYS ADD NEW OPTIONS ON THE END!
 
-  scope :with_option, lambda { |option| {:conditions => "options_mask & #{2**OPTIONS.index(option.to_s)} > 0 "} }
+  scope :for_message_type, lambda { |message_type| {:joins => :message_types, :conditions => "delivery_options_message_types.message_type_id = #{message_type.id}" }}
 
   def options=(options)
-    self.options_mask = (options & OPTIONS).map { |r| 2**OPTIONS.index(r) }.sum
+    options.each do |option|
+      message_type = MessageType.find_by_name(option.downcase)
+      unless self.message_types.include? message_type
+        self.message_types<<message_type
+      end
+    end
+    return self.message_types
   end
 
-  def options
-    OPTIONS.reject { |r| ((options_mask || 0) & 2**OPTIONS.index(r)).zero? }
-  end
   ##End of OPTIONS##
 end

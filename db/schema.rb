@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121011044146) do
+ActiveRecord::Schema.define(:version => 20121012045333) do
 
   create_table "contact_method_types", :force => true do |t|
     t.string   "name"
@@ -41,7 +41,6 @@ ActiveRecord::Schema.define(:version => 20121011044146) do
   create_table "delivery_options", :force => true do |t|
     t.string   "option_scope"
     t.integer  "scope_id"
-    t.integer  "options_mask"
     t.integer  "contact_method_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -49,6 +48,14 @@ ActiveRecord::Schema.define(:version => 20121011044146) do
 
   add_index "delivery_options", ["contact_method_id", "option_scope", "scope_id"], :name => "index_delivery_options_on_scope_combo"
   add_index "delivery_options", ["contact_method_id"], :name => "index_delivery_options_on_contact_method_id"
+
+  create_table "delivery_options_message_types", :id => false, :force => true do |t|
+    t.integer "delivery_option_id"
+    t.integer "message_type_id"
+  end
+
+  add_index "delivery_options_message_types", ["delivery_option_id", "message_type_id"], :name => "delivery_options_message_type_join_index_a"
+  add_index "delivery_options_message_types", ["message_type_id", "delivery_option_id"], :name => "delivery_options_message_type_join_index_b"
 
   create_table "groups", :force => true do |t|
     t.string   "name"
@@ -108,13 +115,23 @@ ActiveRecord::Schema.define(:version => 20121011044146) do
 
   add_index "message_recipients", ["message_id", "object_id", "object_type"], :name => "index_message_recipients_on_object_combo", :unique => true
 
+  create_table "message_types", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "message_types", ["name"], :name => "index_message_types_on_name", :unique => true
+
   create_table "messages", :force => true do |t|
     t.integer  "name"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "message_type_id"
   end
 
+  add_index "messages", ["message_type_id"], :name => "index_messages_on_message_type_id"
   add_index "messages", ["user_id"], :name => "index_messages_on_user_id"
 
   create_table "recipient_types", :force => true do |t|

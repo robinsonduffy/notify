@@ -42,14 +42,14 @@ class Recipient < ActiveRecord::Base
     contacts = Array.new
     # Get our own contact methods
     self.contact_methods.each do |contact_method|
-      delivery_option = contact_method.delivery_options.own.with_option(message_type)
-      contacts.push contact_method if (!delivery_option.empty? || message_type == 'emergency') && contact_method_types.include?(contact_method.contact_method_type.name)
+      delivery_option = contact_method.delivery_options.own.for_message_type(message_type)
+      contacts.push contact_method if (!delivery_option.empty? || message_type.name == 'emergency') && contact_method_types.include?(contact_method.contact_method_type.name)
     end
     # Get the parents contact methods
     self.parents.each do |parent|
       parent.contact_methods.each do |contact_method|
-        delivery_option = contact_method.delivery_options.linked(self.id).with_option(message_type)
-        contacts.push contact_method if (!delivery_option.empty? || message_type == 'emergency') && contact_method_types.include?(contact_method.contact_method_type.name)
+        delivery_option = contact_method.delivery_options.linked(self.id).for_message_type(message_type)
+        contacts.push contact_method if (!delivery_option.empty? || message_type.name == 'emergency') && contact_method_types.include?(contact_method.contact_method_type.name)
       end
     end
     return contacts

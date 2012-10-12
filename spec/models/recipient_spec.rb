@@ -2,6 +2,9 @@ require 'spec_helper'
 
 describe Recipient do
   before(:each) do
+    @message_type_emergency = Factory(:message_type, :name => 'emergency')
+    @message_type_outreach = Factory(:message_type, :name => 'outreach')
+    @message_type_attendance = Factory(:message_type, :name => 'attendance')
     @recipient_type_student = Factory(:recipient_type, :name => 'Student')
     @recipient_type_parent = Factory(:recipient_type, :name => 'Parent')
     @recipient_type_staff = Factory(:recipient_type, :name => 'Staff')
@@ -54,7 +57,7 @@ describe Recipient do
   describe "get message delivery methods" do
     before(:each) do
       @student_1 = Factory(:recipient, :recipient_type_id => @recipient_type_student.id)
-      @student_1_phone = Factory(:contact_method, :delivery_route => '19071111111', :recipient => @student_1, :contact_method_type => @contact_method_type_phone);
+      @student_1_phone = Factory(:contact_method, :delivery_route => '19071111111', :recipient => @student_1, :contact_method_type => @contact_method_type_phone)
       Factory(:delivery_option, :scope_id => @student_1.id, :contact_method => @student_1_phone, :options => ['outreach'])
       @powerschool_demographics = Factory(:recipient, :first_name => 'PowerSchool', :last_name => 'Demographics', :recipient_type_id => @recipient_type_default.id)
       @powerschool_phone_1 = Factory(:contact_method, :delivery_route => '19072221111', :recipient => @powerschool_demographics, :contact_method_type => @contact_method_type_phone);
@@ -99,7 +102,7 @@ describe Recipient do
 
       describe "emergency" do
         it "phone" do
-          contacts = @student_1.contacts('emergency',['phone'])
+          contacts = @student_1.contacts(@message_type_emergency,['phone'])
           [@student_1_phone,@powerschool_phone_1,@powerschool_phone_2,@parent_1_phone_1,@parent_1_phone_2,@parent_2_phone_1,@parent_2_phone_2].each do |good_phone|
             contacts.include?(good_phone).should be_true
           end
@@ -107,7 +110,7 @@ describe Recipient do
             contacts.include?(bad_phone).should_not be_true
           end
 
-          contacts = @student_2.contacts('emergency',['phone'])
+          contacts = @student_2.contacts(@message_type_emergency,['phone'])
           [@powerschool_phone_3,@parent_1_phone_1,@parent_1_phone_2].each do |good_phone|
             contacts.include?(good_phone).should be_true
           end
@@ -117,7 +120,7 @@ describe Recipient do
         end
 
         it "phone & email" do
-          contacts = @student_1.contacts('emergency',['phone','email'])
+          contacts = @student_1.contacts(@message_type_emergency,['phone','email'])
           [@student_1_phone,@powerschool_phone_1,@powerschool_phone_2,@parent_1_phone_1,@parent_1_phone_2,@parent_2_phone_1,@parent_2_phone_2,@parent_1_email_1,@parent_2_email_1].each do |good_phone|
             contacts.include?(good_phone).should be_true
           end
@@ -125,7 +128,7 @@ describe Recipient do
             contacts.include?(bad_phone).should_not be_true
           end
 
-          contacts = @student_2.contacts('emergency',['phone','email'])
+          contacts = @student_2.contacts(@message_type_emergency,['phone','email'])
           [@powerschool_phone_3,@parent_1_phone_1,@parent_1_phone_2,@parent_1_email_1].each do |good_phone|
             contacts.include?(good_phone).should be_true
           end
@@ -135,7 +138,7 @@ describe Recipient do
         end
 
         it "email" do
-          contacts = @student_1.contacts('emergency',['email'])
+          contacts = @student_1.contacts(@message_type_emergency,['email'])
           [@parent_1_email_1,@parent_2_email_1].each do |good_phone|
             contacts.include?(good_phone).should be_true
           end
@@ -143,7 +146,7 @@ describe Recipient do
             contacts.include?(bad_phone).should_not be_true
           end
 
-          contacts = @student_2.contacts('emergency',['email'])
+          contacts = @student_2.contacts(@message_type_emergency,['email'])
           [@parent_1_email_1].each do |good_phone|
             contacts.include?(good_phone).should be_true
           end
@@ -155,7 +158,7 @@ describe Recipient do
 
       describe "outreach" do
         it "phone" do
-          contacts = @student_1.contacts('outreach',['phone'])
+          contacts = @student_1.contacts(@message_type_outreach,['phone'])
           [@student_1_phone,@parent_1_phone_1,@parent_2_phone_2,@parent_2_phone_1].each do |good_phone|
             contacts.include?(good_phone).should be_true
           end
@@ -163,7 +166,7 @@ describe Recipient do
             contacts.include?(bad_phone).should_not be_true
           end
 
-          contacts = @student_2.contacts('outreach',['phone'])
+          contacts = @student_2.contacts(@message_type_outreach,['phone'])
           [@parent_1_phone_1].each do |good_phone|
             contacts.include?(good_phone).should be_true
           end
@@ -173,7 +176,7 @@ describe Recipient do
         end
 
         it "phone & email" do
-          contacts = @student_1.contacts('outreach',['phone','email'])
+          contacts = @student_1.contacts(@message_type_outreach,['phone','email'])
           [@student_1_phone,@parent_1_phone_1,@parent_2_phone_2,@parent_2_phone_1,@parent_1_email_1,@parent_2_email_1].each do |good_phone|
             contacts.include?(good_phone).should be_true
           end
@@ -181,7 +184,7 @@ describe Recipient do
             contacts.include?(bad_phone).should_not be_true
           end
 
-          contacts = @student_2.contacts('outreach',['phone','email'])
+          contacts = @student_2.contacts(@message_type_outreach,['phone','email'])
           [@parent_1_phone_1].each do |good_phone|
             contacts.include?(good_phone).should be_true
           end
@@ -191,7 +194,7 @@ describe Recipient do
         end
 
         it "email" do
-          contacts = @student_1.contacts('outreach',['email'])
+          contacts = @student_1.contacts(@message_type_outreach,['email'])
           [@parent_1_email_1,@parent_2_email_1].each do |good_phone|
             contacts.include?(good_phone).should be_true
           end
@@ -199,7 +202,7 @@ describe Recipient do
             contacts.include?(bad_phone).should_not be_true
           end
 
-          contacts = @student_2.contacts('outreach',['email'])
+          contacts = @student_2.contacts(@message_type_outreach,['email'])
           [].each do |good_phone|
             contacts.include?(good_phone).should be_true
           end
@@ -211,7 +214,7 @@ describe Recipient do
 
       describe "attendance" do
         it "phone" do
-          contacts = @student_1.contacts('attendance',['phone'])
+          contacts = @student_1.contacts(@message_type_attendance,['phone'])
           [@parent_1_phone_1,@parent_2_phone_1].each do |good_phone|
             contacts.include?(good_phone).should be_true
           end
@@ -219,7 +222,7 @@ describe Recipient do
             contacts.include?(bad_phone).should_not be_true
           end
 
-          contacts = @student_2.contacts('attendance',['phone'])
+          contacts = @student_2.contacts(@message_type_attendance,['phone'])
           [@parent_1_phone_2].each do |good_phone|
             contacts.include?(good_phone).should be_true
           end
@@ -229,7 +232,7 @@ describe Recipient do
         end
 
         it "phone & email" do
-          contacts = @student_1.contacts('attendance',['phone','email'])
+          contacts = @student_1.contacts(@message_type_attendance,['phone','email'])
           [@parent_1_phone_1,@parent_2_phone_1,@parent_1_email_1].each do |good_phone|
             contacts.include?(good_phone).should be_true
           end
@@ -237,7 +240,7 @@ describe Recipient do
             contacts.include?(bad_phone).should_not be_true
           end
 
-          contacts = @student_2.contacts('attendance',['phone','email'])
+          contacts = @student_2.contacts(@message_type_attendance,['phone','email'])
           [@parent_1_phone_2].each do |good_phone|
             contacts.include?(good_phone).should be_true
           end
@@ -247,7 +250,7 @@ describe Recipient do
         end
 
         it "email" do
-          contacts = @student_1.contacts('attendance',['email'])
+          contacts = @student_1.contacts(@message_type_attendance,['email'])
           [@parent_1_email_1].each do |good_phone|
             contacts.include?(good_phone).should be_true
           end
@@ -255,7 +258,7 @@ describe Recipient do
             contacts.include?(bad_phone).should_not be_true
           end
 
-          contacts = @student_2.contacts('attendance',['email'])
+          contacts = @student_2.contacts(@message_type_attendance,['email'])
           [].each do |good_phone|
             contacts.include?(good_phone).should be_true
           end

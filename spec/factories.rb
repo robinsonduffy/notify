@@ -41,3 +41,7 @@ end
 Factory.define :contact_method_type do |contact_method_type|
   contact_method_type.name "SMS"
 end
+
+Factory.define :message_type do |message_type|
+  message_type.name "emergency"
+end
