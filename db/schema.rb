@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121012045333) do
+ActiveRecord::Schema.define(:version => 20121013182211) do
 
   create_table "contact_method_types", :force => true do |t|
     t.string   "name"
@@ -56,6 +56,22 @@ ActiveRecord::Schema.define(:version => 20121012045333) do
 
   add_index "delivery_options_message_types", ["delivery_option_id", "message_type_id"], :name => "delivery_options_message_type_join_index_a"
   add_index "delivery_options_message_types", ["message_type_id", "delivery_option_id"], :name => "delivery_options_message_type_join_index_b"
+
+  create_table "from_methods", :force => true do |t|
+    t.string   "from_method_type"
+    t.string   "from_method"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "from_methods_schools", :id => false, :force => true do |t|
+    t.integer "from_method_id"
+    t.integer "school_id"
+  end
+
+  add_index "from_methods_schools", ["from_method_id", "school_id"], :name => "index_from_methods_schools_on_from_method_id_and_school_id"
+  add_index "from_methods_schools", ["school_id", "from_method_id"], :name => "index_from_methods_schools_on_school_id_and_from_method_id"
 
   create_table "groups", :force => true do |t|
     t.string   "name"
@@ -164,6 +180,11 @@ ActiveRecord::Schema.define(:version => 20121012045333) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "street1"
+    t.string   "street2"
+    t.string   "city"
+    t.string   "zip"
+    t.string   "state"
   end
 
   create_table "users", :force => true do |t|
