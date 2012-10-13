@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121013182211) do
+ActiveRecord::Schema.define(:version => 20121013190743) do
 
   create_table "contact_method_types", :force => true do |t|
     t.string   "name"
@@ -37,6 +37,16 @@ ActiveRecord::Schema.define(:version => 20121013182211) do
 
   add_index "contact_methods_lists", ["contact_method_id", "list_id"], :name => "index_contact_methods_lists_on_contact_method_id_and_list_id"
   add_index "contact_methods_lists", ["list_id", "contact_method_id"], :name => "index_contact_methods_lists_on_list_id_and_contact_method_id"
+
+  create_table "delivery_methods", :force => true do |t|
+    t.integer  "message_id"
+    t.integer  "contact_method_type_id"
+    t.integer  "from_method_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delivery_methods", ["message_id"], :name => "index_delivery_methods_on_message_id"
 
   create_table "delivery_options", :force => true do |t|
     t.string   "option_scope"
@@ -186,6 +196,17 @@ ActiveRecord::Schema.define(:version => 20121013182211) do
     t.string   "zip"
     t.string   "state"
   end
+
+  create_table "scripts", :force => true do |t|
+    t.string   "script_type"
+    t.text     "script"
+    t.integer  "script_order",       :default => 0
+    t.integer  "delivery_method_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "scripts", ["delivery_method_id"], :name => "index_scripts_on_delivery_method_id"
 
   create_table "users", :force => true do |t|
     t.string   "username"

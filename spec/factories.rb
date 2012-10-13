@@ -45,3 +45,18 @@ end
 Factory.define :message_type do |message_type|
   message_type.name "emergency"
 end
+
+Factory.define :message do |message|
+  message.name "Test Message"
+end
+
+Factory.define :from_method do |from_method|
+  from_method.from_method_type "email"
+  from_method.from_method "test@example.com"
+end
+
+Factory.define :delivery_method do |delivery_method|
+  delivery_method.association :message
+  delivery_method.association :from_method
+  delivery_method.association :contact_method_type
+end
