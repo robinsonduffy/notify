@@ -4,5 +4,9 @@ class Message < ActiveRecord::Base
   belongs_to :message_type
   has_many :delivery_methods, :dependent => :destroy
 
+  STATUS = ['','draft']
 
+  validates :name, :presence => true
+  validates :status, :presence => true, :inclusion => {:in => 1..(Message::STATUS.length - 1)}
+  validates :user_id, :presence => true
 end

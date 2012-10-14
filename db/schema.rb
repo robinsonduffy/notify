@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121013190743) do
+ActiveRecord::Schema.define(:version => 20121014004757) do
 
   create_table "contact_method_types", :force => true do |t|
     t.string   "name"
@@ -155,9 +155,11 @@ ActiveRecord::Schema.define(:version => 20121013190743) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "message_type_id"
+    t.integer  "status",          :default => 1
   end
 
   add_index "messages", ["message_type_id"], :name => "index_messages_on_message_type_id"
+  add_index "messages", ["status"], :name => "index_messages_on_status"
   add_index "messages", ["user_id"], :name => "index_messages_on_user_id"
 
   create_table "recipient_types", :force => true do |t|

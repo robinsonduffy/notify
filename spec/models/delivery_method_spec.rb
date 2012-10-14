@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe DeliveryMethod do
   before(:each) do
-    @attrs = {:message => Factory(:message), :contact_method_type => Factory(:contact_method_type), :from_method => Factory(:from_method)}
+    @attrs = {:message => Factory(:message, :user => Factory(:user)), :contact_method_type => Factory(:contact_method_type), :from_method => Factory(:from_method)}
   end
 
   it "should create a delivery method if all the right attributes are provided" do

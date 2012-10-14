@@ -48,6 +48,7 @@ end
 
 Factory.define :message do |message|
   message.name "Test Message"
+  message.association :user
 end
 
 Factory.define :from_method do |from_method|
