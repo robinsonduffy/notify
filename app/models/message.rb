@@ -3,6 +3,7 @@ class Message < ActiveRecord::Base
   belongs_to :user
   belongs_to :message_type
   has_many :delivery_methods, :dependent => :destroy
+  has_many :schedules, :dependent => :destroy
 
   STATUS = ['','draft']
 

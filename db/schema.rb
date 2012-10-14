@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121014004757) do
+ActiveRecord::Schema.define(:version => 20121014050658) do
 
   create_table "contact_method_types", :force => true do |t|
     t.string   "name"
@@ -187,6 +187,15 @@ ActiveRecord::Schema.define(:version => 20121014004757) do
 
   add_index "recipients_schools", ["recipient_id", "school_id"], :name => "index_recipients_schools_on_recipient_id_and_school_id"
   add_index "recipients_schools", ["school_id", "recipient_id"], :name => "index_recipients_schools_on_school_id_and_recipient_id"
+
+  create_table "schedules", :force => true do |t|
+    t.datetime "delivery_time"
+    t.integer  "message_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "schedules", ["message_id"], :name => "index_schedules_on_message_id"
 
   create_table "schools", :force => true do |t|
     t.string   "name"
