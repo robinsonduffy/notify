@@ -11,7 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121014233806) do
+ActiveRecord::Schema.define(:version => 20121015200727) do
+
+  create_table "audio_segments", :force => true do |t|
+    t.string   "engine"
+    t.text     "audio"
+    t.integer  "play_order"
+    t.integer  "delivery_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "audio_segments", ["delivery_id", "play_order"], :name => "index_audio_segments_on_delivery_id_and_play_order", :unique => true
+  add_index "audio_segments", ["delivery_id"], :name => "index_audio_segments_on_delivery_id"
 
   create_table "contact_method_types", :force => true do |t|
     t.string   "name"

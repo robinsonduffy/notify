@@ -3,6 +3,7 @@ class Delivery < ActiveRecord::Base
   has_one :message, :through => :delivery_method
   belongs_to :contact_method
   has_one :recipient, :through => :contact_method
+  has_many :audio_segments
 
   DELIVERY_RESULTS = ['','success']
 
