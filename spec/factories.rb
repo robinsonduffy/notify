@@ -12,7 +12,6 @@ Factory.define :recipient do |recipient|
 end
 
 Factory.define :contact_method do |contact_method|
-  contact_method.contact_method_type "phone"
   contact_method.delivery_route "19074554225"
   contact_method.association :recipient
   contact_method.association :contact_method_type
