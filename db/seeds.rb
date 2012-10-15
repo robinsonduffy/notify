@@ -5,3 +5,16 @@
 #
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
+MessageType.find_or_create_by_name('Emergency')
+MessageType.find_or_create_by_name('Outreach')
+MessageType.find_or_create_by_name('Attendance')
+
+ContactMethodType.find_or_create_by_name('Phone')
+ContactMethodType.find_or_create_by_name('SMS')
+ContactMethodType.find_or_create_by_name('Email')
+
+RecipientType.find_or_create_by_name('Student')
+RecipientType.find_or_create_by_name('Parent')
+RecipientType.find_or_create_by_name('Staff')
+RecipientType.find_or_create_by_name('Default')
+
