@@ -16,5 +16,5 @@ ContactMethodType.find_or_create_by_name('Email')
 RecipientType.find_or_create_by_name('Student')
 RecipientType.find_or_create_by_name('Parent')
 RecipientType.find_or_create_by_name('Staff')
-RecipientType.find_or_create_by_name('Default')
+RecipientType.find_or_create_by_name('PowerSchool Demographics')
 
