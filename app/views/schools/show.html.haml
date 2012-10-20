@@ -1,0 +1,3 @@
+%p.back-link= link_to "Back", schools_path
+= render 'school_form', :op => 'Edit'
+%p.form-delete-link= link_to("Delete School", @school, :method => 'delete', :confirm => 'Are you sure you want to delete this school?  This can not be undone.')

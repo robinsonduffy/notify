@@ -1,0 +1,5 @@
+%div#user-actions.round
+  %p= link_to("Create New School", new_school_path)
+%ul#schools-list.no-list-style
+  - @schools.each do |school|
+    %li= link_to school.name, school

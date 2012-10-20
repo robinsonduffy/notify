@@ -1,0 +1,24 @@
+= form_for(@school) do |f|
+  = render 'shared/error_messages', :object => f.object
+  %fieldset
+    %legend Basic Info
+    %div.form-field
+      = f.label :name, :class => "required"
+      = f.text_field :name
+    %div.form-field
+      = f.label :street1, "Address 1"
+      = f.text_field :street1
+    %div.form-field
+      = f.label :street2, "Address 2"
+      = f.text_field :street2
+    %div.form-field
+      = f.label :city
+      = f.text_field :city
+    %div.form-field
+      = f.label :state
+      = f.select :state, options_for_select(us_states,@school.state)
+    %div.form-field
+      = f.label :zip
+      = f.text_field :zip
+  %div.form-submit
+    = f.submit "#{op} School"

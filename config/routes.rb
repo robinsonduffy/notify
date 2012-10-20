@@ -12,6 +12,9 @@ LibrarySchedule::Application.routes.draw do
   resources :users, :except => [:edit]
   post '/users/:user_id', :to => "users#change_password"
 
+  #schools
+  resources :schools, :except => [:edit]
+
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

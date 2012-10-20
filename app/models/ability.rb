@@ -61,6 +61,7 @@ class Ability
     #meant for people who need their egos stroked but don't need access to the dangerous stuff
     recipient_manager
     can :manage, User
+    can :manage, School
   end
 
   def location_manager
