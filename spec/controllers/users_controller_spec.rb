@@ -29,7 +29,7 @@ describe UsersController do
     describe "for admin users" do
       before(:each) do
         @admin_user = test_login(Factory(:user, :username => 'admin'))
-        @admin_user.roles=["admin"]
+        @admin_user.roles = ["system admin"]
         @admin_user.save
       end
 
@@ -43,30 +43,6 @@ describe UsersController do
         response.should have_selector("title", :content => "User Detail")
       end
 
-      it "should display the user's info" do
-        get :show, :id => @show_user
-        response.should have_selector("p", :content => @show_user.username)
-        response.should have_selector("p", :content => @show_user.name)
-      end
-
-      it "should display an 'admin' checkbox" do
-        get :show, :id => @show_user
-        response.should have_selector("input", :type => 'checkbox', :id => "user-role-admin")
-      end
-
-      it "should check the 'admin' checkbox if you are looking at an admin" do
-        show_admin_user = Factory(:user, :username => "Another Admin")
-        show_admin_user.roles=["admin"]
-        show_admin_user.save
-        get :show, :id => show_admin_user
-        response.should have_selector("input", :type => "checkbox", :id => "user-role-admin", :checked => "checked")
-      end
-
-      it "should disable the 'admin' checkbox if you are looking at yourself" do
-        get :show, :id => @admin_user
-        response.should have_selector("input", :type => "checkbox", :id => "user-role-admin", :checked => "checked", :disabled => "disabled")
-      end
-
       it "should display a delete button" do
         get :show, :id => @show_user
         response.should have_selector("a", :href => user_path(@show_user), :content => 'Delete')
@@ -76,9 +52,7 @@ describe UsersController do
         get :show, :id => @admin_user
         response.should_not have_selector("a", :href => user_path(@admin_user), :content => 'Delete')
       end
-
     end
-
   end
 
   describe "GET 'index'" do
@@ -109,7 +83,7 @@ describe UsersController do
     describe "for admin users" do
       before(:each) do
         @admin_user = test_login(Factory(:user, :username => 'admin'))
-        @admin_user.roles=["admin"]
+        @admin_user.roles = ["system admin"]
       end
 
       it "should allow access" do
@@ -168,7 +142,7 @@ describe UsersController do
     describe "for admins" do
       before(:each) do
         @admin_user = test_login(Factory(:user, :username => 'admin'))
-        @admin_user.roles=["admin"]
+        @admin_user.roles = ["system admin"]
         test_login(@admin_user)
       end
 
@@ -214,10 +188,27 @@ describe UsersController do
       end
     end
 
+    describe "for system-managers" do
+      before(:each) do
+        @system_manager_user = test_login(Factory(:user, :username => 'system_manager'))
+        @system_manager_user.roles = ["system manager"]
+      end
+
+      it "should be success" do
+        get :new
+        response.should be_success
+      end
+
+      it "should not let them create a system admin user" do
+        get :new
+        response.should have_selector("input", :value=>"system admin", :disabled => 'disabled')
+      end
+    end
+
     describe "for admins" do
       before(:each) do
         @admin_user = test_login(Factory(:user, :username => 'admin'))
-        @admin_user.roles=["admin"]
+        @admin_user.roles = ["system admin"]
       end
 
       it "should be success" do
@@ -255,21 +246,21 @@ describe UsersController do
       end
     end
 
-    describe "for admins" do
+    describe "for system managers" do
       before(:each) do
         @admin_user = test_login(Factory(:user, :username => 'admin'))
-        @admin_user.roles=["admin"]
+        @admin_user.roles = ["system manager"]
       end
 
       describe "failure" do
         it "should not create a new user" do
           lambda do
-            post :create, :user => @attrs.merge(:username => '')
+            post :create, :user => @attrs.merge(:username => ''), :roles => ['']
           end.should_not change(User, :count)
         end
 
         it "should render the form again" do
-          post :create, :user => @attrs.merge(:username => '')
+          post :create, :user => @attrs.merge(:username => ''), :roles => ['']
           response.should render_template('new')
         end
       end
@@ -277,74 +268,20 @@ describe UsersController do
       describe "success" do
         it "should create a new non-ldap user" do
           lambda do
-            post :create, :user => @attrs
+            post :create, :user => @attrs, :roles => ['']
           end.should change(User, :count).by(1)
         end
 
         it "should create a new ldap user" do
           lambda do
-            post :create, :user => @attrs.merge(:password =>''), :ldap => 'true'
+            post :create, :user => @attrs.merge(:password =>''), :ldap => 'true', :roles => ['']
           end.should change(User, :count).by(1)
         end
 
         it "should redirect to the user detail page" do
-          post :create, :user => @attrs
+          post :create, :user => @attrs, :roles => ['']
           response.should redirect_to(user_path(assigns(:user)))
         end
-      end
-    end
-  end
-
-  describe "POST 'save_roles'" do
-    before(:each) do
-      @user1 = Factory(:user)
-      @admin_user1 = Factory(:user, :username => 'admin1')
-      @admin_user1.roles=["admin"]
-      @admin_user1.save
-      @admin_user2 = Factory(:user, :username => 'admin2')
-      @admin_user2.roles=["admin"]
-      @admin_user2.save
-    end
-
-    describe "for non-users" do
-      it "should deny access" do
-        post :save_roles, :user_id => @user1.id, :roles_to_set => "admin"
-        response.should_not be_success
-      end
-    end
-
-    describe "for non-admins" do
-      before(:each) do
-        test_login(@user1)
-      end
-
-      it "should deny access" do
-        post :save_roles, :user_id => @user1.id, :roles_to_set => "admin"
-        response.should_not be_success
-      end
-    end
-
-    describe "for admins" do
-      before(:each) do
-        test_login(@admin_user1)
-      end
-
-      it "should add the admin role for other users" do
-        post :save_roles, :user_id => @user1.id, :roles_to_set => "admin"
-        @user1.reload
-        @user1.roles.should include("admin")
-      end
-
-      it "should remove the admin role for other users" do
-        post :save_roles, :user_id => @admin_user2.id, :roles_to_set => ""
-        @admin_user2.reload
-        @admin_user2.roles.should_not include("admin")
-      end
-
-      it "should not remove the admin role from yourself even if you try" do
-        post :save_roles, :user_id => @admin_user1.id, :roles_to_set => ""
-        @admin_user1.reload
-        @admin_user1.roles.should include("admin")
       end
     end
   end

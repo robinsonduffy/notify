@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
   before_create :encrypt_password
 
   ##ROLES##
-  ROLES = ['admin'] #ALWAYS ADD NEW ROLES ON THE END!
+  ROLES = ['system admin','system manager','location manager','full sender','limited sender','recipient manager','recipient viewer'] #ALWAYS ADD NEW ROLES ON THE END!
 
   scope :with_role, lambda { |role| {:conditions => "roles_mask & #{2**ROLES.index(role.to_s)} > 0 "} }
 

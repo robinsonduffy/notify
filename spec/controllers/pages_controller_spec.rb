@@ -45,7 +45,7 @@ describe PagesController do
 
     describe "for admin users" do
       before(:each) do
-        test_login(Factory(:user, :username => 'admin', :roles => ["admin"]))
+        test_login(Factory(:user, :username => 'admin', :roles => ["system admin"]))
       end
 
       it "should have a users link" do

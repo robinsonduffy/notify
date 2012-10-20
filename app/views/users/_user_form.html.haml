@@ -1,0 +1,44 @@
+= form_for(@user) do |f|
+  = render 'shared/error_messages', :object => f.object
+  %fieldset
+    %legend Basic Info
+    %div.form-field
+      = f.label :username
+      = f.text_field :username, :disabled => (op == 'Edit')
+    - if op == 'Create'
+      %div.form-field
+        = f.label :password
+        = f.password_field :password
+        %p#ldap-check-box
+          = check_box_tag("ldap", "true", false, {:id => 'ldap-user'})
+          = label_tag("ldap-user", "LDAP User (do not enter a password)")
+    - else
+      %div.form-field
+        Password Stuff for current users
+    %div.form-field
+      = f.label :name
+      = f.text_field :name
+  %fieldset
+    %legend Roles
+    %ul#user-roles.no-list-style
+      - User::ROLES.each do |role|
+        %li
+          = check_box_tag "roles[]", role, @user.roles.include?(role), {:disabled => ((role == 'system admin' && !can?(:assign, :system_admins) || (role == 'system admin' && can?(:assign, :system_admins) && current_user == @user)) ? true : false), :id => "user-roles-#{role.gsub(' ','_')}"}
+          %strong= role.titleize
+    = hidden_field_tag "roles[]", ((@user.roles.include?('system admin') && !can?(:assign, :system_admins)) || (@user.roles.include?('system admin') && @user == current_user)) ? "system admin" : "", :id => "user-roles-hidden"
+  %fieldset
+    %legend Message Permissions
+    %h4 Message Types
+    %ul#user-message-types.no-list-style
+      - MessageType.all.each do |message_type|
+        %li
+          = check_box_tag "user-message-type-#{message_type.id}", message_type.id
+          %strong= message_type.name
+    %h4 Schools
+    %ul#user-schools.no-list-style
+      - School.all.each do |school|
+        %li
+          = check_box_tag "user-school-#{school.id}", school.id
+          %strong= school.name
+  %div.form-submit
+    = f.submit "#{op} User"

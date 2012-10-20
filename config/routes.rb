@@ -9,8 +9,7 @@ LibrarySchedule::Application.routes.draw do
   match '/login/preauth', :to => 'sessions#preauth'
 
   #users
-  resources :users, :only => [:show, :index, :destroy, :new, :create]
-  post '/users/:user_id/save_roles', :to => "users#save_roles", :as => 'save_roles'
+  resources :users, :except => [:edit]
   post '/users/:user_id', :to => "users#change_password"
 
   

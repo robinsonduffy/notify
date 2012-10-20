@@ -6,6 +6,18 @@ class UsersController < ApplicationController
     @title = "User Detail"
   end
 
+  def update
+    @user = User.find(params[:id])
+    @user.roles = params[:roles]
+    if @user.update_attributes(params[:user])
+      flash[:success] = "User info updated"
+      redirect_to @user
+    else
+      @title = "User Detail"
+      render :show
+    end
+  end
+
   def index
     @title = "Users"
     @users = User.order(:name)
@@ -29,36 +41,19 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(params[:user])
-    if(params[:ldap] == 'true')
+    @user.roles = params[:roles]
+    if params[:ldap] == 'true'
       @user.password = 'ldap'
     end
-    if(@user.save)
+    if @user.save
       #user created
-      redirect_to(@user)
+      #CREATE USER PERMISSION LINKS
+      flash[:success] = "User successfully created."
+      redirect_to @user
     else
-      #there wasn an error
+      #there was an error
       @title = "Create New User"
-      render(:new)
-    end
-  end
-
-  def save_roles
-    authorize!(:manage, User)
-    @user = User.find(params[:user_id])
-    if params[:roles_to_set].empty?
-      @user.roles=[""]
-    else
-      @user.roles=params[:roles_to_set].split(',')
-    end
-    if(@user == current_user)
-      unless @user.roles.include?("admin")
-        @user.roles=params[:roles_to_set].split(',').push("admin")
-      end
-    end
-    if(@user.save)
-      render :nothing => true
-    else
-      page_not_found
+      render :new
     end
   end
 

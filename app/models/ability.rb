@@ -8,7 +8,7 @@ class Ability
       send(:guest)
     else
       send(:user)
-      @user.roles.each { |role| send(role) }
+      @user.roles.each { |role| send(role.gsub(' ','_')) }
     end
 
 
@@ -48,9 +48,44 @@ class Ability
   end
 
   #special roles
-  def admin
-    #superusers
+  def system_admin
+    #full control over everything
+    #Not meant for non-technical users
+    system_manager
+    can :assign, :system_admins
+  end
+
+  def system_manager
+    #superusers  Have access to most of the system, but not the overly technical stuff
+    #They can manage users
+    #meant for people who need their egos stroked but don't need access to the dangerous stuff
+    recipient_manager
     can :manage, User
+  end
+
+  def location_manager
+    #maintain a location
+    #can manage lists and groups for their location(s)
+    #meant for principals or admin secretaries
+    full_sender
+  end
+
+  def full_sender
+    #can send to any group/list for their location(s)
+    #cannot create lists/groups
+  end
+
+  def limited_sender
+    #can only send to specific groups/lists for their locations(s)
+  end
+
+  def recipient_manager
+    #maintains recipients
+    recipient_viewer
+  end
+
+  def recipient_viewer
+    #can view full recipient data, but cannot edit it
   end
 
 end
