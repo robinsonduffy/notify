@@ -8,12 +8,15 @@ LibrarySchedule::Application.routes.draw do
   match '/logout', :to => 'sessions#destroy'
   match '/login/preauth', :to => 'sessions#preauth'
 
-  #users
-  resources :users, :except => [:edit]
-  post '/users/:user_id', :to => "users#change_password"
+  #admin
+  scope '/admin' do
+    #users
+    resources :users, :except => [:edit]
+    post '/users/:user_id', :to => "users#change_password"
 
-  #schools
-  resources :schools, :except => [:edit]
+    #schools
+    resources :schools, :except => [:edit]
+  end
 
   
   # The priority is based upon order of creation:
