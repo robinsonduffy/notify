@@ -22,6 +22,7 @@ class FromMethodsController < ApplicationController
     else
       #there was an error
       @title = "Create New From Method"
+      @from_method.from_method = params[:from_method][:from_method]
       render :new
     end
   end
@@ -33,6 +34,7 @@ class FromMethodsController < ApplicationController
 
   def update
     @from_method = FromMethod.find(params[:id])
+    original_from_method = "#{params[:from_method][:from_method]}"
     if @from_method.update_attributes(params[:from_method])
       #update the schools as well
       @from_method.school_ids = params[:schools]
@@ -40,6 +42,7 @@ class FromMethodsController < ApplicationController
       redirect_to @from_method
     else
       @title = "From Method Detail"
+      @from_method.from_method = original_from_method
       render :show
     end
   end

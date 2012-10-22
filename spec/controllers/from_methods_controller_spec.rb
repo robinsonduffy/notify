@@ -2,11 +2,12 @@ require 'spec_helper'
 
 describe FromMethodsController do
   render_views
+  include ActionView::Helpers::NumberHelper
 
   describe "GET 'index'" do
     before(:each) do
       @from_method1 = Factory(:from_method, :from_method => "from@example.com", :from_method_type => 'email')
-      @from_method2 = Factory(:from_method, :from_method => "19071231234", :from_method_type => 'phone')
+      @from_method2 = Factory(:from_method, :from_method => "907-123-1234", :from_method_type => 'phone')
     end
 
     describe "for non-users" do
@@ -39,7 +40,7 @@ describe FromMethodsController do
       it "should list the from methods" do
         get :index
         response.should have_selector("a", :content => @from_method1.from_method, :href => from_method_path(@from_method1))
-        response.should have_selector("a", :content => @from_method2.from_method, :href => from_method_path(@from_method2))
+        response.should have_selector("a", :content => humanize_phone_number(@from_method2.from_method), :href => from_method_path(@from_method2))
       end
 
       it "should have a 'create new from method' link" do

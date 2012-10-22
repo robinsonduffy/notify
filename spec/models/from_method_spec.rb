@@ -26,10 +26,32 @@ describe FromMethod do
       bad_from.should_not be_valid
     end
 
-    it "should allow from_method to be the same for a different from_method_type" do
-      FromMethod.create!(@attrs)
-      good_from = FromMethod.new(@attrs.merge(:from_method_type => 'phone'))
-      good_from.should be_valid
+    it "should accept valid email address" do
+      ["user@foo.com", "THE_USER@foo.bar.org", "first.last@foo.jp", "email_with_space_at_end@example.com "].each do |good_address|
+        good_from = FromMethod.new(@attrs.merge(:from_method_type => 'email', :from_method => good_address))
+        good_from.should be_valid
+      end
+    end
+
+    it "should reject invalid email addresses" do
+      ["user@foo,com", "user_at_foo.org", "not even close to a real address@example.com", "example.user@foo."].each do |bad_address|
+        bad_from = FromMethod.new(@attrs.merge(:from_method_type => 'email', :from_method => bad_address))
+        bad_from.should_not be_valid
+      end
+    end
+
+    it "should accept valid phone numbers" do
+      ["(907) 123-1234", "(907)123-1234", "907-123-1234", "907 123-1234"].each do |good_phone|
+        good_from = FromMethod.new(@attrs.merge(:from_method_type => 'phone', :from_method => good_phone))
+        good_from.should be_valid
+      end
+    end
+
+    it "should reject invalid phone numbers" do
+      ["123-1234", "Not a phone number at all", "1231234", "123-123456", "(90)123-1234"].each do |bad_phone|
+        bad_from = FromMethod.new(@attrs.merge(:from_method_type => 'phone', :from_method => bad_phone))
+        bad_from.should_not be_valid
+      end
     end
   end
 end
