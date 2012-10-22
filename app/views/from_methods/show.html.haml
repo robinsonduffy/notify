@@ -1,0 +1,3 @@
+%p.back-link= link_to "Back", from_methods_path
+= render 'from_method_form', :op => 'Edit'
+%p.form-delete-link= link_to("Delete From Method", @from_method, :method => 'delete', :confirm => 'Are you sure you want to delete this From Method?  This can not be undone.')

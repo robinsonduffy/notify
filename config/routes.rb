@@ -16,6 +16,9 @@ LibrarySchedule::Application.routes.draw do
 
     #schools
     resources :schools, :except => [:edit]
+
+    #from_methods
+    resources :from_methods, :except => [:edit]
   end
 
   

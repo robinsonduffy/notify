@@ -1,0 +1,22 @@
+= form_for(@from_method) do |f|
+  = render 'shared/error_messages', :object => f.object
+  %fieldset
+    %legend Basic Info
+    %div.form-field
+      = f.label :from_method_type, 'Type', :class => "required"
+      = f.select :from_method_type, options_for_select([['Email','email'],['Phone','phone']], @from_method.from_method_type)
+    %div.form-field
+      = f.label :from_method, "From Method", :class => 'required'
+      = f.text_field :from_method
+  %fieldset
+    %legend Schools
+    %p.note Select the schools this From Method can be used at.
+    %div.form-field
+      = hidden_field_tag "schools[]", ''
+      %ul.no-list-style
+        - School.order(:name).each do |school|
+          %li
+            = check_box_tag "schools[]", school.id, @from_method.schools.include?(school)
+            %strong= school.name
+  %div.form-submit
+    = f.submit "#{op} From Method"

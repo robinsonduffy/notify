@@ -62,6 +62,7 @@ class Ability
     recipient_manager
     can :manage, User
     can :manage, School
+    can :manage, FromMethod
   end
 
   def location_manager
