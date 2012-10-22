@@ -20,5 +20,15 @@
     %div.form-field
       = f.label :zip
       = f.text_field :zip
+  %fieldset
+    %legend From Methods
+    %p.note Select the From Methods available for this school's messages.
+    %div.form-field
+      = hidden_field_tag "from_methdos[]", ''
+      %ul.no-list-style
+        - FromMethod.order(:from_method).each do |from_method|
+          %li
+            = check_box_tag "from_methods[]", from_method.id, @school.from_methods.include?(from_method)
+            %strong= from_method.from_method
   %div.form-submit
     = f.submit "#{op} School"

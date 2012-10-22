@@ -15,6 +15,8 @@ class SchoolsController < ApplicationController
     @school = School.new(params[:school])
     if @school.save
       #school created
+      #save the from_methods
+      @school.from_method_ids = params[:from_methods]
       flash[:success] = "School successfully created."
       redirect_to @school
     else
@@ -32,6 +34,8 @@ class SchoolsController < ApplicationController
   def update
     @school = School.find(params[:id])
     if @school.update_attributes(params[:school])
+      #save the from_methods
+      @school.from_method_ids = params[:from_methods]
       flash[:success] = "School info updated"
       redirect_to @school
     else
