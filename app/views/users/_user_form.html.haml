@@ -1,3 +1,4 @@
+- user_perms = @user.perms
 = form_for(@user) do |f|
   = render 'shared/error_messages', :object => f.object
   %fieldset
@@ -29,16 +30,18 @@
   %fieldset
     %legend Message Permissions
     %h4 Message Types
+    = hidden_field_tag "user_message_types[]", ''
     %ul#user-message-types.no-list-style
       - MessageType.all.each do |message_type|
         %li
-          = check_box_tag "user-message-type-#{message_type.id}", message_type.id
+          = check_box_tag "user_message_types[]", message_type.id, user_perms.include?(message_type), :class => 'user-message-type-checkbox', :id => "user-message-type-#{message_type.id}"
           %strong= message_type.name
     %h4 Schools
+    = hidden_field_tag "user_schools[]", ''
     %ul#user-schools.no-list-style
       - School.all.each do |school|
         %li
-          = check_box_tag "user-school-#{school.id}", school.id
+          = check_box_tag "user_schools[]", school.id, user_perms.include?(school), :class => 'user-school-checkbox', :id => "user-school-#{school.id}"
           %strong= school.name
   %div.form-submit
     = f.submit "#{op} User"

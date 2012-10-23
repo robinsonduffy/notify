@@ -69,6 +69,22 @@ class User < ActiveRecord::Base
     end
   end
 
+  def perms
+    permissions = Array.new
+    self.message_permissions.each do |message_permission|
+      permissions.push message_permission.object
+    end
+    return permissions
+  end
+
+  def perms_by_type(object_type = '')
+    permissions = Array.new
+    self.message_permissions.where(:object_type => object_type).each do |message_permission|
+      permissions.push message_permission.object
+    end
+    return permissions
+  end
+
   private
     def User.ldap_lookup(username, submitted_password)
       if(username.blank? || submitted_password.blank?)

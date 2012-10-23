@@ -7,9 +7,20 @@ class UsersController < ApplicationController
   end
 
   def update
+    #raise params.inspect
     @user = User.find(params[:id])
     @user.roles = params[:roles]
     if @user.update_attributes(params[:user])
+      #CREATE USER PERMISSIONS
+      @user.message_permissions.delete_all
+      #SCHOOLS
+      params[:user_schools].each do |school_id|
+        @user.message_permissions.create!({:object_id => school_id, :object_type => 'School'}) unless school_id.blank?
+      end
+      #MESSAGETYPES
+      params[:user_message_types].each do |message_type_id|
+        @user.message_permissions.create!({:object_id => message_type_id, :object_type => 'MessageType'}) unless message_type_id.blank?
+      end
       flash[:success] = "User info updated"
       redirect_to @user
     else
