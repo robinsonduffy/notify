@@ -7,7 +7,7 @@
       = f.select :from_method_type, options_for_select([['Email','email'],['Phone','phone']], @from_method.from_method_type)
     %div.form-field
       = f.label :from_method, "From Method", :class => 'required'
-      = f.text_field :from_method, :value => (@from_method.from_method_type == 'phone' ? (!humanize_phone_number(@from_method.from_method) ? @from_method.from_method : humanize_phone_number(@from_method.from_method)) : @from_method.from_method)
+      = f.text_field :from_method, :value => (@from_method.from_method_type == 'phone' ? (!@from_method.from_method.humanize_phone_number ? @from_method.from_method : @from_method.from_method.humanize_phone_number) : @from_method.from_method)
   %fieldset
     %legend Schools
     %p.note Select the schools this From Method can be used at.

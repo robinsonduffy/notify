@@ -8,5 +8,5 @@
   %tbody
     - @from_methods.each do |from_method|
       %tr
-        %td= link_to (from_method.from_method_type == 'phone' ? humanize_phone_number(from_method.from_method) : from_method.from_method), from_method
+        %td= link_to (from_method.from_method_type == 'phone' ? from_method.from_method.humanize_phone_number : from_method.from_method), from_method
         %td= from_method.from_method_type.humanize

@@ -40,7 +40,7 @@ describe FromMethodsController do
       it "should list the from methods" do
         get :index
         response.should have_selector("a", :content => @from_method1.from_method, :href => from_method_path(@from_method1))
-        response.should have_selector("a", :content => humanize_phone_number(@from_method2.from_method), :href => from_method_path(@from_method2))
+        response.should have_selector("a", :content => @from_method2.from_method.humanize_phone_number, :href => from_method_path(@from_method2))
       end
 
       it "should have a 'create new from method' link" do
