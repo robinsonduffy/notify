@@ -36,6 +36,13 @@
         %li
           = check_box_tag "user_message_types[]", message_type.id, user_perms.include?(message_type), :class => 'user-message-type-checkbox', :id => "user-message-type-#{message_type.id}"
           %strong= message_type.name
+    %h4 Contact Methods
+    = hidden_field_tag "user_contact_method_types[]", ''
+    %ul#user-contact-method-types.no-list-style
+      - ContactMethodType.all.each do |contact_method_type|
+        %li
+          = check_box_tag "user_contact_method_types[]", contact_method_type.id, user_perms.include?(contact_method_type), :class => 'user-contact-method-type-checkbox', :id => "user-contact-method-type-#{contact_method_type.id}"
+          %strong= contact_method_type.name
     %h4 Schools
     = hidden_field_tag "user_schools[]", ''
     %ul#user-schools.no-list-style
