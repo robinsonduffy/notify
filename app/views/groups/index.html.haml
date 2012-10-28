@@ -1,0 +1,5 @@
+%div#user-actions.round
+  %p= link_to("Create New Group", new_group_path)
+%ul#groups-list.no-list-style
+  - @groups.each do |group|
+    %li= link_to group.name, group

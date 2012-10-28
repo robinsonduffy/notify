@@ -25,6 +25,8 @@ LibrarySchedule::Application.routes.draw do
   scope '/manage' do
     #lists
     resources :lists, :except => [:edit]
+    #groups
+    resources :groups, :except => [:edit]
   end
 
   

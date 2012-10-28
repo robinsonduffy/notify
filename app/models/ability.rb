@@ -88,6 +88,7 @@ class Ability
   def recipient_manager
     #maintains recipients
     recipient_viewer
+    can :manage, Group
   end
 
   def recipient_viewer
