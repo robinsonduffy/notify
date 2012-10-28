@@ -33,6 +33,13 @@ Factory.define :group do |group|
   group.association :user
 end
 
+Factory.define :list do |list|
+  list.name "Test List"
+  list.description "Test List Description"
+  list.association :user
+  list.association :school
+end
+
 Factory.define :recipient_type do |recipient_type|
   recipient_type.name "Student"
 end

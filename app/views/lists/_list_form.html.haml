@@ -1,0 +1,15 @@
+= form_for(@list) do |f|
+  = render 'shared/error_messages', :object => f.object
+  %fieldset
+    %legend Basic Info
+    %div.form-field
+      = f.label :school_id
+      = f.select :school_id, options_for_select(School.order(:name).map{ |school| [school.name, school.id] if can?(:manage, School) || current_user.perms_by_type("School").include?(school)}.compact, (@list.school.nil? ? '': @list.school.id)), :include_blank => can?(:manage, School) ? "Not School Specific" : false
+    %div.form-field
+      = f.label :name, :class => "required"
+      = f.text_field :name
+    %div.form-field
+      = f.label :description, :class => "required"
+      = f.text_area :description
+  %div.form-submit
+    = f.submit "#{op} List"

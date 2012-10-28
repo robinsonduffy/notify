@@ -21,6 +21,12 @@ LibrarySchedule::Application.routes.draw do
     resources :from_methods, :except => [:edit]
   end
 
+  #manage
+  scope '/manage' do
+    #lists
+    resources :lists, :except => [:edit]
+  end
+
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -63,6 +63,7 @@ class Ability
     can :manage, User
     can :manage, School
     can :manage, FromMethod
+    can :manage, List
   end
 
   def location_manager
@@ -70,6 +71,9 @@ class Ability
     #can manage lists and groups for their location(s)
     #meant for principals or admin secretaries
     full_sender
+    can :manage, List do |list|
+      !list.school.nil? && @user.perms_by_type('School').include?(list.school)
+    end
   end
 
   def full_sender
