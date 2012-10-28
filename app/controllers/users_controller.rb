@@ -25,6 +25,10 @@ class UsersController < ApplicationController
       params[:user_contact_method_types].each do |contact_method_type_id|
         @user.message_permissions.create!({:object_id => contact_method_type_id, :object_type => 'ContactMethodType'}) unless contact_method_type_id.blank?
       end
+      #LISTS
+      params[:user_lists].each do |list_id|
+        @user.message_permissions.create!({:object_id => list_id, :object_type => 'List'}) unless list_id.blank?
+      end
       flash[:success] = "User info updated"
       redirect_to @user
     else

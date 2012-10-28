@@ -50,5 +50,12 @@
         %li
           = check_box_tag "user_schools[]", school.id, user_perms.include?(school), :class => 'user-school-checkbox', :id => "user-school-#{school.id}"
           %strong= school.name
+    %h4 Lists
+    = hidden_field_tag "user_lists[]", ''
+    %ul#user-lists.no-list-style
+      - List.all.each do |list|
+        %li
+          = check_box_tag "user_lists[]", list.id, user_perms.include?(list), :class => 'user-list-checkbox', :id => "user-list-#{list.id}"
+          %strong= "#{list.name}#{list.school.nil? ? '' : " (#{list.school.name})"}"
   %div.form-submit
     = f.submit "#{op} User"
