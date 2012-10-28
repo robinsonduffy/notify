@@ -29,6 +29,10 @@ class UsersController < ApplicationController
       params[:user_lists].each do |list_id|
         @user.message_permissions.create!({:object_id => list_id, :object_type => 'List'}) unless list_id.blank?
       end
+      #GROUPS
+      params[:user_groups].each do |group_id|
+        @user.message_permissions.create!({:object_id => group_id, :object_type => 'Group'}) unless group_id.blank?
+      end
       flash[:success] = "User info updated"
       redirect_to @user
     else
