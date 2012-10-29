@@ -33,6 +33,10 @@ class UsersController < ApplicationController
       params[:user_groups].each do |group_id|
         @user.message_permissions.create!({:object_id => group_id, :object_type => 'Group'}) unless group_id.blank?
       end
+      #RECIPIENT_TYPES
+      params[:user_recipient_types].each do |recipient_type_id|
+        @user.message_permissions.create!({:object_id => recipient_type_id, :object_type => 'RecipientType'}) unless recipient_type_id.blank?
+      end
       flash[:success] = "User info updated"
       redirect_to @user
     else

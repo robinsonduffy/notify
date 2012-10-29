@@ -36,6 +36,14 @@
         %li
           = check_box_tag "user_message_types[]", message_type.id, user_perms.include?(message_type), :class => 'user-message-type-checkbox', :id => "user-message-type-#{message_type.id}"
           %strong= message_type.name
+    %h4 Recipient Types
+    = hidden_field_tag "user_recipient_types[]", ''
+    %ul#user-recipint-types.no-list-style
+      - RecipientType.all.each do |recipient_type|
+        - if recipient_type.sendable?
+          %li
+            = check_box_tag "user_recipient_types[]", recipient_type.id, user_perms.include?(recipient_type), :class => 'user-recipient-type-checkbox', :id => "user-recipient-type-#{recipient_type.id}"
+            %strong= recipient_type.name
     %h4 Contact Methods
     = hidden_field_tag "user_contact_method_types[]", ''
     %ul#user-contact-method-types.no-list-style
