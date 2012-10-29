@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121026050945) do
+ActiveRecord::Schema.define(:version => 20121029203143) do
 
   create_table "audio_segments", :force => true do |t|
     t.string   "engine"
@@ -192,6 +192,7 @@ ActiveRecord::Schema.define(:version => 20121026050945) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "sendable"
   end
 
   create_table "recipients", :force => true do |t|
