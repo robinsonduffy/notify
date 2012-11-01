@@ -1,5 +1,5 @@
 - user_perms = @user.perms
-= form_for(@user) do |f|
+= form_for(@user, :html => {:class => "notify-user-form"}) do |f|
   = render 'shared/error_messages', :object => f.object
   %fieldset
     %legend Basic Info
@@ -24,53 +24,59 @@
     %ul#user-roles.no-list-style
       - User::ROLES.each do |role|
         %li
-          = check_box_tag "roles[]", role, @user.roles.include?(role), {:disabled => ((role == 'system admin' && !can?(:assign, :system_admins) || (role == 'system admin' && can?(:assign, :system_admins) && current_user == @user)) ? true : false), :id => "user-roles-#{role.gsub(' ','_')}"}
+          = check_box_tag "roles[]", role, @user.roles.include?(role), {:disabled => ((role == 'system admin' && !can?(:assign, :system_admins) || (role == 'system admin' && can?(:assign, :system_admins) && current_user == @user)) ? true : false), :id => "user-roles-#{role.gsub(' ','_')}", :class => "user-role-checkbox"}
           %strong= role.titleize
     = hidden_field_tag "roles[]", ((@user.roles.include?('system admin') && !can?(:assign, :system_admins)) || (@user.roles.include?('system admin') && @user == current_user)) ? "system admin" : "", :id => "user-roles-hidden"
-  %fieldset
+  %fieldset#message-permissions-fieldset
     %legend Message Permissions
-    %h4 Message Types
-    = hidden_field_tag "user_message_types[]", ''
-    %ul#user-message-types.no-list-style
-      - MessageType.all.each do |message_type|
-        %li
-          = check_box_tag "user_message_types[]", message_type.id, user_perms.include?(message_type), :class => 'user-message-type-checkbox', :id => "user-message-type-#{message_type.id}"
-          %strong= message_type.name
-    %h4 Recipient Types
-    = hidden_field_tag "user_recipient_types[]", ''
-    %ul#user-recipint-types.no-list-style
-      - RecipientType.all.each do |recipient_type|
-        - if recipient_type.sendable?
+    %div#message-permissions-message-types
+      %h4 Message Types
+      = hidden_field_tag "user_message_types[]", ''
+      %ul#user-message-types.no-list-style
+        - MessageType.all.each do |message_type|
           %li
-            = check_box_tag "user_recipient_types[]", recipient_type.id, user_perms.include?(recipient_type), :class => 'user-recipient-type-checkbox', :id => "user-recipient-type-#{recipient_type.id}"
-            %strong= recipient_type.name
-    %h4 Contact Methods
-    = hidden_field_tag "user_contact_method_types[]", ''
-    %ul#user-contact-method-types.no-list-style
-      - ContactMethodType.all.each do |contact_method_type|
-        %li
-          = check_box_tag "user_contact_method_types[]", contact_method_type.id, user_perms.include?(contact_method_type), :class => 'user-contact-method-type-checkbox', :id => "user-contact-method-type-#{contact_method_type.id}"
-          %strong= contact_method_type.name
-    %h4 Schools
-    = hidden_field_tag "user_schools[]", ''
-    %ul#user-schools.no-list-style
-      - School.all.each do |school|
-        %li
-          = check_box_tag "user_schools[]", school.id, user_perms.include?(school), :class => 'user-school-checkbox', :id => "user-school-#{school.id}"
-          %strong= school.name
-    %h4 Lists
-    = hidden_field_tag "user_lists[]", ''
-    %ul#user-lists.no-list-style
-      - List.all.each do |list|
-        %li
-          = check_box_tag "user_lists[]", list.id, user_perms.include?(list), :class => 'user-list-checkbox', :id => "user-list-#{list.id}"
-          %strong= "#{list.name}#{list.school.nil? ? '' : " (#{list.school.name})"}"
-    %h4 Groups
-    = hidden_field_tag "user_groups[]", ''
-    %ul#user-groups.no-list-style
-      - Group.all.each do |group|
-        %li
-          = check_box_tag "user_groups[]", group.id, user_perms.include?(group), :class => 'user-group-checkbox', :id => "user-group-#{group.id}"
-          %strong= group.name
+            = check_box_tag "user_message_types[]", message_type.id, user_perms.include?(message_type), :class => 'user-message-type-checkbox', :id => "user-message-type-#{message_type.id}"
+            %strong= message_type.name
+    %div#message-permissions-recipient-types
+      %h4 Recipient Types
+      = hidden_field_tag "user_recipient_types[]", ''
+      %ul#user-recipint-types.no-list-style
+        - RecipientType.all.each do |recipient_type|
+          - if recipient_type.sendable?
+            %li
+              = check_box_tag "user_recipient_types[]", recipient_type.id, user_perms.include?(recipient_type), :class => 'user-recipient-type-checkbox', :id => "user-recipient-type-#{recipient_type.id}"
+              %strong= recipient_type.name
+    %div#message-permissions-contact-method-types
+      %h4 Contact Methods
+      = hidden_field_tag "user_contact_method_types[]", ''
+      %ul#user-contact-method-types.no-list-style
+        - ContactMethodType.all.each do |contact_method_type|
+          %li
+            = check_box_tag "user_contact_method_types[]", contact_method_type.id, user_perms.include?(contact_method_type), :class => 'user-contact-method-type-checkbox', :id => "user-contact-method-type-#{contact_method_type.id}"
+            %strong= contact_method_type.name
+    %div#message-permissions-schools
+      %h4 Schools
+      = hidden_field_tag "user_schools[]", ''
+      %ul#user-schools.no-list-style
+        - School.all.each do |school|
+          %li
+            = check_box_tag "user_schools[]", school.id, user_perms.include?(school), :class => 'user-school-checkbox', :id => "user-school-#{school.id}"
+            %strong= school.name
+    %div#message-permissions-lists
+      %h4 Lists
+      = hidden_field_tag "user_lists[]", ''
+      %ul#user-lists.no-list-style
+        - List.all.each do |list|
+          %li
+            = check_box_tag "user_lists[]", list.id, user_perms.include?(list), :class => 'user-list-checkbox', :id => "user-list-#{list.id}"
+            %strong= "#{list.name}#{list.school.nil? ? '' : " (#{list.school.name})"}"
+    %div#message-permissions-groups
+      %h4 Groups
+      = hidden_field_tag "user_groups[]", ''
+      %ul#user-groups.no-list-style
+        - Group.all.each do |group|
+          %li
+            = check_box_tag "user_groups[]", group.id, user_perms.include?(group), :class => 'user-group-checkbox', :id => "user-group-#{group.id}"
+            %strong= group.name
   %div.form-submit
     = f.submit "#{op} User"
