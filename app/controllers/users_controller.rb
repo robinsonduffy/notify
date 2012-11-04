@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  authorize_resource
+  authorize_resource :except => [:assign_user_message_permissions, :change_password]
 
   def show
     @user = User.find(params[:id])
@@ -12,31 +12,7 @@ class UsersController < ApplicationController
     @user.roles = params[:roles]
     if @user.update_attributes(params[:user])
       #CREATE USER PERMISSIONS
-      @user.message_permissions.delete_all
-      #SCHOOLS
-      params[:user_schools].each do |school_id|
-        @user.message_permissions.create!({:object_id => school_id, :object_type => 'School'}) unless school_id.blank?
-      end
-      #MESSAGETYPES
-      params[:user_message_types].each do |message_type_id|
-        @user.message_permissions.create!({:object_id => message_type_id, :object_type => 'MessageType'}) unless message_type_id.blank?
-      end
-      #CONTACT_METHOD_TYPES
-      params[:user_contact_method_types].each do |contact_method_type_id|
-        @user.message_permissions.create!({:object_id => contact_method_type_id, :object_type => 'ContactMethodType'}) unless contact_method_type_id.blank?
-      end
-      #LISTS
-      params[:user_lists].each do |list_id|
-        @user.message_permissions.create!({:object_id => list_id, :object_type => 'List'}) unless list_id.blank?
-      end
-      #GROUPS
-      params[:user_groups].each do |group_id|
-        @user.message_permissions.create!({:object_id => group_id, :object_type => 'Group'}) unless group_id.blank?
-      end
-      #RECIPIENT_TYPES
-      params[:user_recipient_types].each do |recipient_type_id|
-        @user.message_permissions.create!({:object_id => recipient_type_id, :object_type => 'RecipientType'}) unless recipient_type_id.blank?
-      end
+      assign_user_message_permissions
       flash[:success] = "User info updated"
       redirect_to @user
     else
@@ -75,6 +51,7 @@ class UsersController < ApplicationController
     if @user.save
       #user created
       #CREATE USER PERMISSION LINKS
+      assign_user_message_permissions
       flash[:success] = "User successfully created."
       redirect_to @user
     else
@@ -105,4 +82,42 @@ class UsersController < ApplicationController
     redirect_to user_path(:id => params[:user_id])
   end
 
+
+  private
+    def assign_user_message_permissions
+      authorize!(:create, User)
+      current_permissions = Array.new
+      #SCHOOLS
+      params[:user_schools] = [''] if params[:user_schools].nil?
+      params[:user_schools].each do |school_id|
+        (current_permissions << @user.message_permissions.find_or_create_by_object_type_and_object_id('School', school_id).id) unless school_id.blank?
+      end
+      #MESSAGETYPES
+      params[:user_message_types] = [''] if params[:user_message_types].nil?
+      params[:user_message_types].each do |message_type_id|
+        (current_permissions << @user.message_permissions.find_or_create_by_object_type_and_object_id('MessageType', message_type_id).id) unless message_type_id.blank?
+      end
+      #CONTACT_METHOD_TYPES
+      params[:user_contact_method_types] = [''] if params[:user_contact_method_types].nil?
+      params[:user_contact_method_types].each do |contact_method_type_id|
+        (current_permissions << @user.message_permissions.find_or_create_by_object_type_and_object_id('ContactMethodType', contact_method_type_id).id) unless contact_method_type_id.blank?
+      end
+      #LISTS
+      params[:user_lists] = [''] if params[:user_lists].nil?
+      params[:user_lists].each do |list_id|
+        (current_permissions << @user.message_permissions.find_or_create_by_object_type_and_object_id('List', list_id).id) unless list_id.blank?
+      end
+      #GROUPS
+      params[:user_groups] = [''] if params[:user_groups].nil?
+      params[:user_groups].each do |group_id|
+        (current_permissions << @user.message_permissions.find_or_create_by_object_type_and_object_id('Group', group_id).id) unless group_id.blank?
+      end
+      #RECIPIENT_TYPES
+      params[:user_recipient_types] = [''] if params[:user_recipient_types].nil?
+      params[:user_recipient_types].each do |recipient_type_id|
+        (current_permissions << @user.message_permissions.find_or_create_by_object_type_and_object_id('RecipientType', recipient_type_id).id) unless recipient_type_id.blank?
+      end
+      #DELETE OLD USER MESSAGE PERMISSIONS
+      @user.message_permissions.where("id NOT IN (#{current_permissions.join(',')})").delete_all
+    end
 end
