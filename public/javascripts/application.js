@@ -6,7 +6,7 @@
 
 //USER PERMISSIONS FORM
 $(document).ready(function(){
-  $(".notify-user-form .user-role-checkbox").change(function(){
+  $(".notify-user-form .user-role-checkbox, .notify-user-form #user-group-any, .notify-user-form #user-list-any, .notify-user-form .user-school-checkbox, .notify-user-form #user-list-school").change(function(){
     cleanup_user_permissions_form();
   });
   $(".notify-user-form").each(function(){
@@ -30,6 +30,7 @@ function cleanup_user_permissions_form(){
   $("#message-permissions-schools").show();
   $("#message-permissions-lists").show();
   $("#message-permissions-groups").show();
+  $("#message-permissions-fieldset li").show();
   if($("#user-roles-system_admin").is(":checked")){
     $(".user-role-checkbox").not("#user-roles-system_admin").attr("disabled", "true").removeAttr("checked")
     $(".user-message-type-checkbox").attr("disabled", "true")
@@ -95,5 +96,19 @@ function cleanup_user_permissions_form(){
   }
   if($("#user-roles-recipient_viewer").is(":checked")){
     $("#user-roles-recipient_manager").attr("disabled", "true").removeAttr("checked")
+  }
+  if($("#user-group-any").is(":checked")){
+    $(".user-group-checkbox").not("#user-group-any").attr("disabled","true").removeAttr("checked").parent("li").hide();
+  }
+  if($(".user-school-checkbox:checked").length == 0){
+    $("#user-list-school").attr("disabled", "true").removeAttr("checked")
+  }
+  if($("#user-list-any").is(":checked")){
+    $(".user-list-checkbox").not("#user-list-any").attr("disabled","true").removeAttr("checked").parent("li").hide();
+  }
+  if($("#user-list-school").is(":checked")){
+    $(".user-school-checkbox:checked").each(function(){
+      $(".user-list-checkbox[data-school_id='"+$(this).val()+"']").attr("disabled","true").removeAttr("checked").parent("li").hide();
+    });
   }
 }
