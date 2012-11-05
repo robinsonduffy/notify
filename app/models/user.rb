@@ -72,7 +72,15 @@ class User < ActiveRecord::Base
   def perms
     permissions = Array.new
     self.message_permissions.each do |message_permission|
-      permissions.push message_permission.object
+      unless message_permission.object.nil?
+        permissions.push message_permission.object
+      else
+        if message_permission.object_id == -1
+          permissions.push "Any #{message_permission.object_type}"
+        elsif message_permission.object_id == -2
+          permissions.push "Member School-Specific #{message_permission.object_type}s"
+        end
+      end
     end
     return permissions
   end

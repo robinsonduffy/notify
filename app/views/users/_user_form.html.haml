@@ -66,14 +66,23 @@
       %h4 Lists
       = hidden_field_tag "user_lists[]", ''
       %ul#user-lists.no-list-style
+        %li
+          = check_box_tag "user_lists[]", -1, user_perms.include?("Any List"), :class => 'user-list-checkbox', :id => "user-list-any"
+          %strong Any List
+        %li
+          = check_box_tag "user_lists[]", -2, user_perms.include?("Member School-Specific Lists"), :class => 'user-list-checkbox', :id => "user-list-school"
+          %strong Member School-Specific Lists
         - List.all.each do |list|
           %li
-            = check_box_tag "user_lists[]", list.id, user_perms.include?(list), :class => 'user-list-checkbox', :id => "user-list-#{list.id}"
+            = check_box_tag "user_lists[]", list.id, user_perms.include?(list), :class => 'user-list-checkbox', :id => "user-list-#{list.id}", "data-school_id" => list.school_id
             %strong= "#{list.name}#{list.school.nil? ? '' : " (#{list.school.name})"}"
     %div#message-permissions-groups
       %h4 Groups
       = hidden_field_tag "user_groups[]", ''
       %ul#user-groups.no-list-style
+        %li
+          = check_box_tag "user_groups[]", -1, user_perms.include?("Any Group"), :class => 'user-group-checkbox', :id => "user-group-any"
+          %strong Any Group
         - Group.all.each do |group|
           %li
             = check_box_tag "user_groups[]", group.id, user_perms.include?(group), :class => 'user-group-checkbox', :id => "user-group-#{group.id}"
