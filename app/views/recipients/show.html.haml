@@ -1,0 +1,18 @@
+//TODO CSS for view-fields & edit link
+%p.back-link= link_to "Back", recipients_path
+- if can? :edit, @recipient
+  %p.edit-link= link_to "Edit Recipient Info", edit_recipient_path(@recipient)
+%fieldset
+  %legend Basic Info
+  %div.view-field
+    %p.label Type
+    %p.value= @recipient.recipient_type.name
+  %div.view-field
+    %p.label First Name
+    %p.value= @recipient.first_name
+  %div.view-field
+    %p.label Last Name
+    %p.value= @recipient.last_name
+  %div.view-field
+    %p.label External ID
+    %p.value= @recipient.external_id

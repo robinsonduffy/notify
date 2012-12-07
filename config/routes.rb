@@ -29,6 +29,9 @@ LibrarySchedule::Application.routes.draw do
     resources :groups, :except => [:edit]
   end
 
+  #recipients
+  resources :recipients
+
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

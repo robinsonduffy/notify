@@ -88,11 +88,13 @@ class Ability
   def recipient_manager
     #maintains recipients
     recipient_viewer
+    can :manage, Recipient
     can :manage, Group
   end
 
   def recipient_viewer
     #can view full recipient data, but cannot edit it
+    can :read, Recipient
   end
 
 end

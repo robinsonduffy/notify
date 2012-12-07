@@ -1,0 +1,3 @@
+%p.back-link= link_to "Back", recipient_path(@recipient)
+= render 'recipient_form', :op => 'Edit'
+%p.form-delete-link= link_to("Delete Recipient", @recipient, :method => 'delete', :confirm => 'Are you sure you want to delete this Recipient?  This can not be undone.')
