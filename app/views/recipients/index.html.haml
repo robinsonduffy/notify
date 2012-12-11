@@ -1,3 +1,7 @@
 - if can? :create, Recipient
   %div#user-actions.round
     %p= link_to("Create New Recipient", new_recipient_path)
+//TODO Full-fledged gui to find recipients
+%ul#recipients-list.no-list-style
+  - @recipients.each do |recipient|
+    %li= link_to "#{recipient.first_name} #{recipient.last_name}", recipient

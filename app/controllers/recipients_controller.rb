@@ -3,6 +3,7 @@ class RecipientsController < ApplicationController
 
   def index
     @title = "Recipients"
+    @recipients = Recipient.all
   end
 
   def new
