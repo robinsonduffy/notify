@@ -112,3 +112,11 @@ function cleanup_user_permissions_form(){
     });
   }
 }
+
+//RECIPIENT EDIT FORM
+//RECIPIENT LINKS
+$(document).ready(function(){
+  $('body').delegate('.recipient-link-delete img','click',function(){
+    $(this).closest("p").remove();
+  });
+});

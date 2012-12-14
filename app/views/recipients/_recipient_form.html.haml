@@ -14,5 +14,28 @@
     %div.form-field
       = f.label :external_id, "External ID", :class => "required"
       = f.text_field :external_id
+  %fieldset
+    %legend Links
+    %table#recipient-links-gui
+      %tr
+        %td#students
+          %div
+            - @recipient.students.each do |student|
+              %p{:class => 'recipient-link-student', :id => "recipient-link-student-#{student.id}"}
+                = "#{student.first_name} #{student.last_name}"
+                %span.recipient-link-delete.clickable= image_tag(path_to_image("link_delete.png"))
+                = hidden_field_tag "recipient_students[]", student.id, :id => "recipient-link-student-hidden-#{student.id}"
+        %td.arrow= image_tag path_to_image "arrow_right_grey.png"
+        %td#self
+          = image_tag path_to_image("user.png")
+          %h5 This Recipient
+        %td.arrow= image_tag path_to_image "arrow_right_grey.png"
+        %td#parents
+          %div
+            - @recipient.parents.each do |parent|
+              %p{:class => 'recipient-link-parent', :id => "recipient-link-parent-#{parent.id}"}
+                = "#{parent.first_name} #{parent.last_name}"
+                %span.recipient-link-delete.clickable= image_tag(path_to_image("link_delete.png"))
+                = hidden_field_tag "recipient_parents[]", parent.id, :id => "recipient-link-parent-hidden-#{parent.id}"
   %div.form-submit
     = f.submit "#{op} Recipient"

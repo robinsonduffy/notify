@@ -37,6 +37,11 @@ class RecipientsController < ApplicationController
   def update
     @recipient = Recipient.find(params[:id])
     if @recipient.update_attributes(params[:recipient])
+      # Save the Parent/Student Links
+      params[:recipient_parents] = Array.new if params[:recipient_parents].nil?
+      params[:recipient_students] = Array.new if params[:recipient_students].nil?
+      @recipient.parent_ids = params[:recipient_parents]
+      @recipient.student_ids = params[:recipient_students]
       flash[:success] = "Recipient updated."
       redirect_to recipient_path(@recipient)
     else

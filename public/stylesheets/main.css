@@ -47,3 +47,5 @@ body a:visited {color:#06c;}
   border-radius:         10px;
 }
 
+.clickable {cursor: pointer;}
+
